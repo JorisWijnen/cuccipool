@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+ENV/
+.idea/
+.vscode/
+voorspellingen.xlsx.temp.xlsx

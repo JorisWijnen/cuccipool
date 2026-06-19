@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuccipool - World Cup Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="main-header">
+      <div class="logo-area">
+        <div class="trophy-glow">
+          <i class="fa-solid fa-trophy text-gold"></i>
+        </div>
+        <div class="header-text">
+          <h1>Cuccipool <span>2026</span></h1>
+          <p class="subtitle">World Cup Group Stage Dashboard & Predictor</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="meta-item">
+          <span class="meta-label">Last Calc:</span>
+          <span class="meta-value" id="last-updated-time">-</span>
+        </div>
+        <div class="status-indicator">
+          <span class="dot pulse"></span>
+          <span class="status-text">Live Sync Active</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="dashboard-grid">
+      <!-- Left Column: Leaderboard -->
+      <section class="grid-card leaderboard-card">
+        <div class="card-header">
+          <div class="header-title">
+            <i class="fa-solid fa-ranking-star"></i>
+            <h2>Leaderboard standings</h2>
+          </div>
+          <span class="badge" id="participant-count">2 Players</span>
+        </div>
+        <div class="table-container">
+          <table id="leaderboard-table">
+            <thead>
+              <tr>
+                <th class="col-rank">Rank</th>
+                <th class="col-name">Name</th>
+                <th class="col-pts text-center">Matches</th>
+                <th class="col-pts text-center">Topscorers</th>
+                <th class="col-pts text-center">Champion</th>
+                <th class="col-total text-center">Total</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <!-- Dynamically populated -->
+              <tr class="placeholder-row">
+                <td colspan="6"><i class="fa-solid fa-spinner fa-spin"></i> Loading standings...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Right Column: Settings, Champion and Topscorers -->
+      <section class="grid-card admin-card">
+        <div class="card-header">
+          <div class="header-title">
+            <i class="fa-solid fa-sliders"></i>
+            <h2>Pool Controls & Stats</h2>
+          </div>
+        </div>
+        
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('topscorers-tab')">
+            <i class="fa-solid fa-soccer-ball"></i> Topscorers
+          </button>
+          <button class="tab-btn" onclick="switchTab('settings-tab')">
+            <i class="fa-solid fa-gears"></i> Tournament
+          </button>
+        </div>
+
+        <!-- Topscorers Panel -->
+        <div id="topscorers-tab" class="tab-content active">
+          <p class="section-desc">Set actual goals scored by predicted topscorers. Multipliers: Attacker (8x), Midfielder (16x), Defender (32x).</p>
+          <div class="topscorers-list" id="topscorers-list-container">
+            <!-- Dynamically populated -->
+            <div class="placeholder-text"><i class="fa-solid fa-spinner fa-spin"></i> Loading topscorers...</div>
+          </div>
+        </div>
+
+        <!-- Settings/Tournament Panel -->
+        <div id="settings-tab" class="tab-content">
+          <div class="form-group">
+            <label for="actual-champion-input">Actual Tournament Champion</label>
+            <div class="input-with-icon">
+              <i class="fa-solid fa-crown text-gold"></i>
+              <input type="text" id="actual-champion-input" placeholder="e.g. Spanje" oninput="onChampionChange(this.value)">
+            </div>
+            <p class="field-help">Predicting this correctly awards 250 points.</p>
+          </div>
+
+          <div class="pool-actions">
+            <h3>Export/Import Data</h3>
+            <p class="section-desc">Download updated actual results to save them permanently in your `actual_results.json` file.</p>
+            <div class="action-buttons">
+              <button class="btn btn-primary" onclick="exportResults()">
+                <i class="fa-solid fa-file-export"></i> Export actual_results.json
+              </button>
+              <button class="btn btn-secondary" onclick="simulateRandomResults()">
+                <i class="fa-solid fa-dice"></i> Simulate Group Stage
+              </button>
+              <button class="btn btn-outline" onclick="resetToDefaults()">
+                <i class="fa-solid fa-rotate-left"></i> Reset Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Section: Match Comparison -->
+    <section class="grid-card comparison-card">
+      <div class="comparison-header">
+        <div class="header-title">
+          <i class="fa-solid fa-code-compare"></i>
+          <h2>Match Predictions & Head-to-Head</h2>
+        </div>
+        <div class="player-selectors">
+          <div class="selector-group">
+            <label for="player-a-select">Player 1</label>
+            <select id="player-a-select" onchange="onPlayerSelectChange()"></select>
+          </div>
+          <div class="vs-divider">VS</div>
+          <div class="selector-group">
+            <label for="player-b-select">Player 2</label>
+            <select id="player-b-select" onchange="onPlayerSelectChange()"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="matches-layout">
+        <!-- Sidebar Groups Navigation -->
+        <nav class="groups-nav" id="groups-navigation">
+          <!-- Dynamically populated group links -->
+        </nav>
+
+        <!-- Matches Grid Container -->
+        <div class="matches-grid-wrapper">
+          <div class="group-header-banner">
+            <h3 id="active-group-title">Group A</h3>
+            <span class="group-rules-info">Exact = 45 pts | Winner/Draw = 30 pts</span>
+          </div>
+          <div class="matches-grid" id="matches-grid-container">
+            <!-- Dynamically populated match cards -->
+            <div class="placeholder-text"><i class="fa-solid fa-spinner fa-spin"></i> Loading matches...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <p>Cuccipool &copy; 2026 - Powered by Antigravity AI. Designed for high fidelity sports predictions.</p>
+    </footer>
+  </div>
+
+  <!-- Javascript Modules -->
+  <script src="app.js"></script>
+</body>
+</html>

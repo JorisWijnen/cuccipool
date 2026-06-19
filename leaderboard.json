@@ -1,0 +1,2474 @@
+{
+  "lastUpdated": "2026-06-19T15:58:55.224522",
+  "leaderboard": [
+    {
+      "rank": 1,
+      "name": "Joep",
+      "matchPoints": 510,
+      "topscorerPoints": 88,
+      "championPoints": 0,
+      "totalPoints": 598,
+      "totalGoals": 8
+    },
+    {
+      "rank": 2,
+      "name": "Joris",
+      "matchPoints": 510,
+      "topscorerPoints": 80,
+      "championPoints": 0,
+      "totalPoints": 590,
+      "totalGoals": 8
+    },
+    {
+      "rank": 3,
+      "name": "Jordy",
+      "matchPoints": 330,
+      "topscorerPoints": 32,
+      "championPoints": 0,
+      "totalPoints": 362,
+      "totalGoals": 4
+    }
+  ],
+  "participantsDetails": [
+    {
+      "name": "Joep",
+      "matchPoints": 510,
+      "topscorerPoints": 88,
+      "championPoints": 0,
+      "totalPoints": 598,
+      "totalGoals": 8,
+      "predictions": {
+        "matches": {
+          "MEX-ZAF": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "ZKO-CZE": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "CAN-BOS": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "USA-PAR": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "QAT-SUI": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "BRA-MAR": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "HAI-SCO": {
+            "prediction": "0-1",
+            "points": 45
+          },
+          "AUS-TUR": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "GER-CUW": {
+            "prediction": "3-0",
+            "points": 30
+          },
+          "NED-JAP": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "IVO-ECU": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "SWE-TUN": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "ESP-CPV": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "BEL-EGY": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "SAR-URU": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "IRN-NZL": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "FRA-SEN": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "IRK-NOO": {
+            "prediction": "0-2",
+            "points": 30
+          },
+          "ARG-ALG": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "AUT-JOR": {
+            "prediction": "2-0",
+            "points": 30
+          },
+          "POR-COD": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "ENG-CRO": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "GHA-PAN": {
+            "prediction": "1-0",
+            "points": 45
+          },
+          "OEZ-COL": {
+            "prediction": "0-1",
+            "points": 30
+          },
+          "CZE-ZAF": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "SUI-BOS": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "CAN-QAT": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "MEX-ZKO": {
+            "prediction": "2-1",
+            "points": 30
+          },
+          "USA-AUS": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "SCO-MAR": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "BRA-HAI": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "TUR-PAR": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "NED-SWE": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "GER-IVO": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "ECU-CUW": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "TUN-JAP": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "ESP-SAR": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "BEL-IRN": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "URU-CPV": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "NZL-EGY": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "ARG-AUT": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "FRA-IRK": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "NOO-SEN": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "JOR-ALG": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "POR-OEZ": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "ENG-GHA": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "PAN-CRO": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "COL-COD": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "SUI-CAN": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "BOS-QAT": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "MAR-HAI": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "SCO-BRA": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "ZAF-ZKO": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "CZE-MEX": {
+            "prediction": "0-0",
+            "points": 0
+          },
+          "CUW-IVO": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "ECU-GER": {
+            "prediction": "1-3",
+            "points": 0
+          },
+          "TUN-NED": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "JAP-SWE": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "PAR-AUS": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "TUR-USA": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "NOO-FRA": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "SEN-IRK": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "URU-ESP": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "CPV-SAR": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "EGY-IRN": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "NZL-BEL": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "CRO-GHA": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "PAN-ENG": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "COD-OEZ": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "COL-POR": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "JOR-ARG": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "ALG-AUT": {
+            "prediction": "0-1",
+            "points": 0
+          }
+        },
+        "topscorers": [
+          {
+            "name": "E. Haaland",
+            "position": "attacker",
+            "goals": 2,
+            "pointsPerGoal": 8,
+            "points": 16
+          },
+          {
+            "name": "L. Messi",
+            "position": "attacker",
+            "goals": 3,
+            "pointsPerGoal": 8,
+            "points": 24
+          },
+          {
+            "name": "C.Ronaldo",
+            "position": "attacker",
+            "goals": 0,
+            "pointsPerGoal": 8,
+            "points": 0
+          },
+          {
+            "name": "K. Havertz",
+            "position": "midfielder",
+            "goals": 2,
+            "pointsPerGoal": 16,
+            "points": 32
+          },
+          {
+            "name": "J. Musiala",
+            "position": "midfielder",
+            "goals": 1,
+            "pointsPerGoal": 16,
+            "points": 16
+          },
+          {
+            "name": "F. Wirtz",
+            "position": "midfielder",
+            "goals": 0,
+            "pointsPerGoal": 16,
+            "points": 0
+          }
+        ],
+        "champion": {
+          "predicted": "Spanje",
+          "actual": "",
+          "points": 0,
+          "correct": false
+        }
+      },
+      "rank": 1
+    },
+    {
+      "name": "Joris",
+      "matchPoints": 510,
+      "topscorerPoints": 80,
+      "championPoints": 0,
+      "totalPoints": 590,
+      "totalGoals": 8,
+      "predictions": {
+        "matches": {
+          "MEX-ZAF": {
+            "prediction": "2-1",
+            "points": 30
+          },
+          "ZKO-CZE": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "CAN-BOS": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "USA-PAR": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "QAT-SUI": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "BRA-MAR": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "HAI-SCO": {
+            "prediction": "0-3",
+            "points": 30
+          },
+          "AUS-TUR": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "GER-CUW": {
+            "prediction": "6-0",
+            "points": 30
+          },
+          "NED-JAP": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "IVO-ECU": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "SWE-TUN": {
+            "prediction": "2-0",
+            "points": 30
+          },
+          "ESP-CPV": {
+            "prediction": "7-1",
+            "points": 0
+          },
+          "BEL-EGY": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "SAR-URU": {
+            "prediction": "0-4",
+            "points": 0
+          },
+          "IRN-NZL": {
+            "prediction": "0-0",
+            "points": 30
+          },
+          "FRA-SEN": {
+            "prediction": "4-0",
+            "points": 30
+          },
+          "IRK-NOO": {
+            "prediction": "0-6",
+            "points": 30
+          },
+          "ARG-ALG": {
+            "prediction": "3-0",
+            "points": 45
+          },
+          "AUT-JOR": {
+            "prediction": "2-0",
+            "points": 30
+          },
+          "POR-COD": {
+            "prediction": "4-0",
+            "points": 0
+          },
+          "ENG-CRO": {
+            "prediction": "2-2",
+            "points": 0
+          },
+          "GHA-PAN": {
+            "prediction": "1-0",
+            "points": 45
+          },
+          "OEZ-COL": {
+            "prediction": "0-1",
+            "points": 30
+          },
+          "CZE-ZAF": {
+            "prediction": "1-1",
+            "points": 45
+          },
+          "SUI-BOS": {
+            "prediction": "2-0",
+            "points": 30
+          },
+          "CAN-QAT": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "MEX-ZKO": {
+            "prediction": "1-0",
+            "points": 45
+          },
+          "USA-AUS": {
+            "prediction": "0-0",
+            "points": 0
+          },
+          "SCO-MAR": {
+            "prediction": "0-3",
+            "points": 0
+          },
+          "BRA-HAI": {
+            "prediction": "5-0",
+            "points": 0
+          },
+          "TUR-PAR": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "NED-SWE": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "GER-IVO": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "ECU-CUW": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "TUN-JAP": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "ESP-SAR": {
+            "prediction": "5-0",
+            "points": 0
+          },
+          "BEL-IRN": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "URU-CPV": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "NZL-EGY": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "ARG-AUT": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "FRA-IRK": {
+            "prediction": "6-0",
+            "points": 0
+          },
+          "NOO-SEN": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "JOR-ALG": {
+            "prediction": "2-2",
+            "points": 0
+          },
+          "POR-OEZ": {
+            "prediction": "3-1",
+            "points": 0
+          },
+          "ENG-GHA": {
+            "prediction": "3-1",
+            "points": 0
+          },
+          "PAN-CRO": {
+            "prediction": "0-3",
+            "points": 0
+          },
+          "COL-COD": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "SUI-CAN": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "BOS-QAT": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "MAR-HAI": {
+            "prediction": "5-0",
+            "points": 0
+          },
+          "SCO-BRA": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "ZAF-ZKO": {
+            "prediction": "0-0",
+            "points": 0
+          },
+          "CZE-MEX": {
+            "prediction": "2-2",
+            "points": 0
+          },
+          "CUW-IVO": {
+            "prediction": "0-0",
+            "points": 0
+          },
+          "ECU-GER": {
+            "prediction": "0-3",
+            "points": 0
+          },
+          "TUN-NED": {
+            "prediction": "0-3",
+            "points": 0
+          },
+          "JAP-SWE": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "PAR-AUS": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "TUR-USA": {
+            "prediction": "4-0",
+            "points": 0
+          },
+          "NOO-FRA": {
+            "prediction": "2-2",
+            "points": 0
+          },
+          "SEN-IRK": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "URU-ESP": {
+            "prediction": "2-2",
+            "points": 0
+          },
+          "CPV-SAR": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "EGY-IRN": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "NZL-BEL": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "CRO-GHA": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "PAN-ENG": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "COD-OEZ": {
+            "prediction": "0-0",
+            "points": 0
+          },
+          "COL-POR": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "JOR-ARG": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "ALG-AUT": {
+            "prediction": "0-3",
+            "points": 0
+          }
+        },
+        "topscorers": [
+          {
+            "name": "C. Gakpo",
+            "position": "attacker",
+            "goals": 0,
+            "pointsPerGoal": 8,
+            "points": 0
+          },
+          {
+            "name": "E. Haaland",
+            "position": "attacker",
+            "goals": 2,
+            "pointsPerGoal": 8,
+            "points": 16
+          },
+          {
+            "name": "H. Kane",
+            "position": "attacker",
+            "goals": 2,
+            "pointsPerGoal": 8,
+            "points": 16
+          },
+          {
+            "name": "K. Mbappé",
+            "position": "attacker",
+            "goals": 2,
+            "pointsPerGoal": 8,
+            "points": 16
+          },
+          {
+            "name": "L. Yamal",
+            "position": "attacker",
+            "goals": 0,
+            "pointsPerGoal": 8,
+            "points": 0
+          },
+          {
+            "name": "K. Havertz",
+            "position": "midfielder",
+            "goals": 2,
+            "pointsPerGoal": 16,
+            "points": 32
+          }
+        ],
+        "champion": {
+          "predicted": "Frankrijk",
+          "actual": "",
+          "points": 0,
+          "correct": false
+        }
+      },
+      "rank": 2
+    },
+    {
+      "name": "Jordy",
+      "matchPoints": 330,
+      "topscorerPoints": 32,
+      "championPoints": 0,
+      "totalPoints": 362,
+      "totalGoals": 4,
+      "predictions": {
+        "matches": {
+          "MEX-ZAF": {
+            "prediction": "2-0",
+            "points": 45
+          },
+          "ZKO-CZE": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "CAN-BOS": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "USA-PAR": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "QAT-SUI": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "BRA-MAR": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "HAI-SCO": {
+            "prediction": "0-1",
+            "points": 45
+          },
+          "AUS-TUR": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "GER-CUW": {
+            "prediction": "3-0",
+            "points": 30
+          },
+          "NED-JAP": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "IVO-ECU": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "SWE-TUN": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "ESP-CPV": {
+            "prediction": "4-0",
+            "points": 0
+          },
+          "BEL-EGY": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "SAR-URU": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "IRN-NZL": {
+            "prediction": "0-0",
+            "points": 30
+          },
+          "FRA-SEN": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "IRK-NOO": {
+            "prediction": "0-2",
+            "points": 30
+          },
+          "ARG-ALG": {
+            "prediction": "2-0",
+            "points": 30
+          },
+          "AUT-JOR": {
+            "prediction": "1-0",
+            "points": 30
+          },
+          "POR-COD": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "ENG-CRO": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "GHA-PAN": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "OEZ-COL": {
+            "prediction": "0-2",
+            "points": 30
+          },
+          "CZE-ZAF": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "SUI-BOS": {
+            "prediction": "2-0",
+            "points": 30
+          },
+          "CAN-QAT": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "MEX-ZKO": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "USA-AUS": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "SCO-MAR": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "BRA-HAI": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "TUR-PAR": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "NED-SWE": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "GER-IVO": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "ECU-CUW": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "TUN-JAP": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "ESP-SAR": {
+            "prediction": "3-1",
+            "points": 0
+          },
+          "BEL-IRN": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "URU-CPV": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "NZL-EGY": {
+            "prediction": "0-0",
+            "points": 0
+          },
+          "ARG-AUT": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "FRA-IRK": {
+            "prediction": "3-0",
+            "points": 0
+          },
+          "NOO-SEN": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "JOR-ALG": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "POR-OEZ": {
+            "prediction": "3-1",
+            "points": 0
+          },
+          "ENG-GHA": {
+            "prediction": "1-0",
+            "points": 0
+          },
+          "PAN-CRO": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "COL-COD": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "SUI-CAN": {
+            "prediction": "0-0",
+            "points": 0
+          },
+          "BOS-QAT": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "MAR-HAI": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "SCO-BRA": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "ZAF-ZKO": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "CZE-MEX": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "CUW-IVO": {
+            "prediction": "1-2",
+            "points": 0
+          },
+          "ECU-GER": {
+            "prediction": "2-2",
+            "points": 0
+          },
+          "TUN-NED": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "JAP-SWE": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "PAR-AUS": {
+            "prediction": "2-1",
+            "points": 0
+          },
+          "TUR-USA": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "NOO-FRA": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "SEN-IRK": {
+            "prediction": "2-0",
+            "points": 0
+          },
+          "URU-ESP": {
+            "prediction": "2-2",
+            "points": 0
+          },
+          "CPV-SAR": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "EGY-IRN": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "NZL-BEL": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "CRO-GHA": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "PAN-ENG": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "COD-OEZ": {
+            "prediction": "0-1",
+            "points": 0
+          },
+          "COL-POR": {
+            "prediction": "1-1",
+            "points": 0
+          },
+          "JOR-ARG": {
+            "prediction": "0-2",
+            "points": 0
+          },
+          "ALG-AUT": {
+            "prediction": "1-1",
+            "points": 0
+          }
+        },
+        "topscorers": [
+          {
+            "name": "O. Dembélé",
+            "position": "attacker",
+            "goals": 0,
+            "pointsPerGoal": 8,
+            "points": 0
+          },
+          {
+            "name": "C. Gakpo",
+            "position": "attacker",
+            "goals": 0,
+            "pointsPerGoal": 8,
+            "points": 0
+          },
+          {
+            "name": "E. Haaland",
+            "position": "attacker",
+            "goals": 2,
+            "pointsPerGoal": 8,
+            "points": 16
+          },
+          {
+            "name": "H. Kane",
+            "position": "attacker",
+            "goals": 2,
+            "pointsPerGoal": 8,
+            "points": 16
+          },
+          {
+            "name": "L. Yamal",
+            "position": "attacker",
+            "goals": 0,
+            "pointsPerGoal": 8,
+            "points": 0
+          },
+          {
+            "name": "J. Bellingham",
+            "position": "attacker",
+            "goals": 0,
+            "pointsPerGoal": 8,
+            "points": 0
+          }
+        ],
+        "champion": {
+          "predicted": "Spanje",
+          "actual": "",
+          "points": 0,
+          "correct": false
+        }
+      },
+      "rank": 3
+    }
+  ],
+  "matches": [
+    {
+      "id": "MEX-ZAF",
+      "actual": "2-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "2-1",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 45
+        }
+      }
+    },
+    {
+      "id": "ZKO-CZE",
+      "actual": "2-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "1-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "CAN-BOS",
+      "actual": "1-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "3-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "USA-PAR",
+      "actual": "4-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "QAT-SUI",
+      "actual": "1-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "BRA-MAR",
+      "actual": "1-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "HAI-SCO",
+      "actual": "0-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 45
+        },
+        "Joris": {
+          "prediction": "0-3",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 45
+        }
+      }
+    },
+    {
+      "id": "AUS-TUR",
+      "actual": "2-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "GER-CUW",
+      "actual": "7-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "3-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "6-0",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "3-0",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "NED-JAP",
+      "actual": "2-2",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "IVO-ECU",
+      "actual": "1-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "SWE-TUN",
+      "actual": "5-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "2-0",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ESP-CPV",
+      "actual": "0-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "7-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "4-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "BEL-EGY",
+      "actual": "1-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "SAR-URU",
+      "actual": "1-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-4",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "IRN-NZL",
+      "actual": "2-2",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-0",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "0-0",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "FRA-SEN",
+      "actual": "3-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "4-0",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "IRK-NOO",
+      "actual": "1-4",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-2",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "0-6",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "ARG-ALG",
+      "actual": "3-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 45
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "AUT-JOR",
+      "actual": "3-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "2-0",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "POR-COD",
+      "actual": "1-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "4-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ENG-CRO",
+      "actual": "4-2",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "2-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "GHA-PAN",
+      "actual": "1-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 45
+        },
+        "Joris": {
+          "prediction": "1-0",
+          "points": 45
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "OEZ-COL",
+      "actual": "1-3",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "0-1",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "CZE-ZAF",
+      "actual": "1-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-1",
+          "points": 45
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "SUI-BOS",
+      "actual": "4-1",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "2-0",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 30
+        }
+      }
+    },
+    {
+      "id": "CAN-QAT",
+      "actual": "6-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "1-0",
+          "points": 30
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "MEX-ZKO",
+      "actual": "1-0",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-1",
+          "points": 30
+        },
+        "Joris": {
+          "prediction": "1-0",
+          "points": 45
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "USA-AUS",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "SCO-MAR",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-3",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "BRA-HAI",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "5-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "3-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "TUR-PAR",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "NED-SWE",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "GER-IVO",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ECU-CUW",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "TUN-JAP",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ESP-SAR",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "5-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "3-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "BEL-IRN",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "URU-CPV",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "3-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "NZL-EGY",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ARG-AUT",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "FRA-IRK",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "6-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "3-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "NOO-SEN",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "JOR-ALG",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "POR-OEZ",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "3-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ENG-GHA",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "PAN-CRO",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-3",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "COL-COD",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "SUI-CAN",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "BOS-QAT",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "MAR-HAI",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "5-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "SCO-BRA",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ZAF-ZKO",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "CZE-MEX",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "CUW-IVO",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ECU-GER",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-3",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-3",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "TUN-NED",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-3",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "JAP-SWE",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "PAR-AUS",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "TUR-USA",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "4-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "NOO-FRA",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "SEN-IRK",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-0",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "URU-ESP",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "2-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "2-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "CPV-SAR",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "EGY-IRN",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "NZL-BEL",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "CRO-GHA",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "3-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "PAN-ENG",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "COD-OEZ",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "1-0",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-0",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "COL-POR",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "1-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "JOR-ARG",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-2",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "0-2",
+          "points": 0
+        }
+      }
+    },
+    {
+      "id": "ALG-AUT",
+      "actual": "",
+      "predictions": {
+        "Joep": {
+          "prediction": "0-1",
+          "points": 0
+        },
+        "Joris": {
+          "prediction": "0-3",
+          "points": 0
+        },
+        "Jordy": {
+          "prediction": "1-1",
+          "points": 0
+        }
+      }
+    }
+  ],
+  "topscorers": [
+    {
+      "name": "C. Gakpo",
+      "position": "attacker",
+      "goals": 0,
+      "pointsPerGoal": 8,
+      "totalPoints": 0
+    },
+    {
+      "name": "C.Ronaldo",
+      "position": "attacker",
+      "goals": 0,
+      "pointsPerGoal": 8,
+      "totalPoints": 0
+    },
+    {
+      "name": "E. Haaland",
+      "position": "attacker",
+      "goals": 2,
+      "pointsPerGoal": 8,
+      "totalPoints": 16
+    },
+    {
+      "name": "F. Wirtz",
+      "position": "midfielder",
+      "goals": 0,
+      "pointsPerGoal": 16,
+      "totalPoints": 0
+    },
+    {
+      "name": "H. Kane",
+      "position": "attacker",
+      "goals": 2,
+      "pointsPerGoal": 8,
+      "totalPoints": 16
+    },
+    {
+      "name": "J. Musiala",
+      "position": "midfielder",
+      "goals": 1,
+      "pointsPerGoal": 16,
+      "totalPoints": 16
+    },
+    {
+      "name": "K. Havertz",
+      "position": "midfielder",
+      "goals": 2,
+      "pointsPerGoal": 16,
+      "totalPoints": 32
+    },
+    {
+      "name": "K. Mbappé",
+      "position": "attacker",
+      "goals": 2,
+      "pointsPerGoal": 8,
+      "totalPoints": 16
+    },
+    {
+      "name": "L. Messi",
+      "position": "attacker",
+      "goals": 3,
+      "pointsPerGoal": 8,
+      "totalPoints": 24
+    },
+    {
+      "name": "L. Yamal",
+      "position": "attacker",
+      "goals": 0,
+      "pointsPerGoal": 8,
+      "totalPoints": 0
+    },
+    {
+      "name": "O. Dembélé",
+      "position": "attacker",
+      "goals": 0,
+      "pointsPerGoal": 8,
+      "totalPoints": 0
+    },
+    {
+      "name": "J. Bellingham",
+      "position": "attacker",
+      "goals": 0,
+      "pointsPerGoal": 8,
+      "totalPoints": 0
+    }
+  ],
+  "champion": {
+    "actual": ""
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "matches": {
+    "MEX-ZAF": "2-0",
+    "ZKO-CZE": "2-1",
+    "CAN-BOS": "1-1",
+    "USA-PAR": "4-1",
+    "QAT-SUI": "1-1",
+    "BRA-MAR": "1-1",
+    "HAI-SCO": "0-1",
+    "AUS-TUR": "2-0",
+    "GER-CUW": "7-1",
+    "NED-JAP": "2-2",
+    "IVO-ECU": "1-0",
+    "SWE-TUN": "5-1",
+    "ESP-CPV": "0-0",
+    "BEL-EGY": "1-1",
+    "SAR-URU": "1-1",
+    "IRN-NZL": "2-2",
+    "FRA-SEN": "3-1",
+    "IRK-NOO": "1-4",
+    "ARG-ALG": "3-0",
+    "AUT-JOR": "3-1",
+    "POR-COD": "1-1",
+    "ENG-CRO": "4-2",
+    "GHA-PAN": "1-0",
+    "OEZ-COL": "1-3",
+    "CZE-ZAF": "1-1",
+    "SUI-BOS": "4-1",
+    "CAN-QAT": "6-0",
+    "MEX-ZKO": "1-0",
+    "USA-AUS": "",
+    "SCO-MAR": "",
+    "BRA-HAI": "",
+    "TUR-PAR": "",
+    "NED-SWE": "",
+    "GER-IVO": "",
+    "ECU-CUW": "",
+    "TUN-JAP": "",
+    "ESP-SAR": "",
+    "BEL-IRN": "",
+    "URU-CPV": "",
+    "NZL-EGY": "",
+    "ARG-AUT": "",
+    "FRA-IRK": "",
+    "NOO-SEN": "",
+    "JOR-ALG": "",
+    "POR-OEZ": "",
+    "ENG-GHA": "",
+    "PAN-CRO": "",
+    "COL-COD": "",
+    "SUI-CAN": "",
+    "BOS-QAT": "",
+    "MAR-HAI": "",
+    "SCO-BRA": "",
+    "ZAF-ZKO": "",
+    "CZE-MEX": "",
+    "CUW-IVO": "",
+    "ECU-GER": "",
+    "TUN-NED": "",
+    "JAP-SWE": "",
+    "PAR-AUS": "",
+    "TUR-USA": "",
+    "NOO-FRA": "",
+    "SEN-IRK": "",
+    "URU-ESP": "",
+    "CPV-SAR": "",
+    "EGY-IRN": "",
+    "NZL-BEL": "",
+    "CRO-GHA": "",
+    "PAN-ENG": "",
+    "COD-OEZ": "",
+    "COL-POR": "",
+    "JOR-ARG": "",
+    "ALG-AUT": ""
+  },
+  "topscorers": {
+    "C. Gakpo": {
+      "goals": 0,
+      "position": "attacker"
+    },
+    "C.Ronaldo": {
+      "goals": 0,
+      "position": "attacker"
+    },
+    "E. Haaland": {
+      "goals": 2,
+      "position": "attacker"
+    },
+    "F. Wirtz": {
+      "goals": 0,
+      "position": "midfielder"
+    },
+    "H. Kane": {
+      "goals": 2,
+      "position": "attacker"
+    },
+    "J. Musiala": {
+      "goals": 1,
+      "position": "midfielder"
+    },
+    "K. Havertz": {
+      "goals": 2,
+      "position": "midfielder"
+    },
+    "K. Mbappé": {
+      "goals": 2,
+      "position": "attacker"
+    },
+    "L. Messi": {
+      "goals": 3,
+      "position": "attacker"
+    },
+    "L. Yamal": {
+      "goals": 0,
+      "position": "attacker"
+    },
+    "O. Dembélé": {
+      "goals": 0,
+      "position": "attacker"
+    },
+    "J. Bellingham": {
+      "goals": 0,
+      "position": "attacker"
+    }
+  },
+  "champion": ""
+}
