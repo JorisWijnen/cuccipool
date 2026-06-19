@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port python -m http.server uses by default
-EXPOSE 8000
+EXPOSE 8800
 
 # Start the simple HTTP server to serve the dashboard
-CMD ["python", "-m", "http.server", "8000"]
+CMD ["python", "-m", "http.server", "8800"]

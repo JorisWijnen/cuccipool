@@ -1,4 +1,4 @@
-import openpyxl
+import csv
 import json
 import os
 import sys
@@ -51,12 +51,12 @@ def clean_name(name):
 def main():
     # Use the directory containing the script to dynamically locate project files
     workspace = os.path.dirname(os.path.abspath(__file__))
-    xlsx_path = os.path.join(workspace, "voorspellingen.xlsx")
+    csv_path = os.path.join(workspace, "voorspellingen.csv")
     results_path = os.path.join(workspace, "actual_results.json")
     leaderboard_path = os.path.join(workspace, "leaderboard.json")
     
-    if not os.path.exists(xlsx_path):
-        print(f"Error: Excel file not found at {xlsx_path}", file=sys.stderr)
+    if not os.path.exists(csv_path):
+        print(f"Error: CSV file not found at {csv_path}", file=sys.stderr)
         sys.exit(1)
         
     # Load actual results
@@ -68,39 +68,70 @@ def main():
         except Exception as e:
             print(f"Warning: Could not parse actual_results.json: {e}. Using empty defaults.", file=sys.stderr)
 
+    rows = []
     try:
-        wb = openpyxl.load_workbook(xlsx_path)
+        with open(csv_path, "r", encoding="utf-8") as f:
+            reader = csv.reader(f, delimiter=";")
+            rows = [row for row in reader]
     except PermissionError:
         import subprocess
-        temp_xlsx_path = xlsx_path + ".temp.xlsx"
-        subprocess.run(["powershell", "-Command", f"Copy-Item '{xlsx_path}' '{temp_xlsx_path}'"], check=True)
-        wb = openpyxl.load_workbook(temp_xlsx_path)
+        temp_csv_path = csv_path + ".temp.csv"
+        subprocess.run(["powershell", "-Command", f"Copy-Item '{csv_path}' '{temp_csv_path}'"], check=True)
         try:
-            os.remove(temp_xlsx_path)
-        except Exception:
-            pass
-    sheet = wb.active
-    
-    # 1. Read participants (from row 1, col 2 onwards)
+            with open(temp_csv_path, "r", encoding="utf-8") as f:
+                reader = csv.reader(f, delimiter=";")
+                rows = [row for row in reader]
+        finally:
+            try:
+                os.remove(temp_csv_path)
+            except Exception:
+                pass
+    except UnicodeDecodeError:
+        # Fallback to cp1252/latin-1 if needed
+        try:
+            with open(csv_path, "r", encoding="latin-1") as f:
+                reader = csv.reader(f, delimiter=";")
+                rows = [row for row in reader]
+        except PermissionError:
+            import subprocess
+            temp_csv_path = csv_path + ".temp.csv"
+            subprocess.run(["powershell", "-Command", f"Copy-Item '{csv_path}' '{temp_csv_path}'"], check=True)
+            try:
+                with open(temp_csv_path, "r", encoding="latin-1") as f:
+                    reader = csv.reader(f, delimiter=";")
+                    rows = [row for row in reader]
+            finally:
+                try:
+                    os.remove(temp_csv_path)
+                except Exception:
+                    pass
+
+    # 1. Read participants (from row 1, col 2 onwards in Excel, index 0, col 1 onwards in CSV)
     participants = []
-    max_c = sheet.max_column
-    for col in range(2, max_c + 1):
-        name = sheet.cell(row=1, column=col).value
-        if name:
-            participants.append({
-                "name": name.strip(),
-                "col_idx": col,
-                "matches": {},
-                "topscorers": [],
-                "champion": ""
-            })
+    if rows:
+        header = rows[0]
+        for col_idx in range(1, len(header)):
+            name = header[col_idx]
+            if name and name.strip():
+                participants.append({
+                    "name": name.strip(),
+                    "col_idx": col_idx,
+                    "matches": {},
+                    "topscorers": [],
+                    "champion": ""
+                })
             
     print(f"Found participants: {[p['name'] for p in participants]}")
     
-    # 2. Read Match Predictions (Rows 2 to 73)
+    # 2. Read Match Predictions (Rows 2 to 73 in Excel, indices 1 to 72 in CSV rows)
     matches_list = []
-    for r in range(2, 74):
-        match_id = sheet.cell(row=r, column=1).value
+    for r in range(1, 73):
+        if r >= len(rows):
+            continue
+        row = rows[r]
+        if not row:
+            continue
+        match_id = row[0]
         if not match_id:
             continue
         match_id = match_id.strip()
@@ -110,7 +141,8 @@ def main():
         act_score = actual_results.get("matches", {}).get(match_id, "")
         
         for p in participants:
-            pred_score = sheet.cell(row=r, column=p["col_idx"]).value
+            col_idx = p["col_idx"]
+            pred_score = row[col_idx] if col_idx < len(row) else ""
             if pred_score is not None:
                 pred_score = str(pred_score).strip()
             else:
@@ -121,18 +153,28 @@ def main():
                 "points": pts
             }
 
-    # 3. Read Topscorer Predictions (Rows 74 to 79)
+    # 3. Read Topscorer Predictions (Rows 74 to 79 in Excel, indices 73 to 78 in CSV rows)
     topscorer_keys = ["Topscorer1", "Topscorer2", "Topscorer3", "Topscorer4", "Topscorer5", "Topscorer6"]
-    for idx, r in enumerate(range(74, 80)):
-        key = sheet.cell(row=r, column=1).value or topscorer_keys[idx]
+    for idx, r in enumerate(range(73, 79)):
+        if r >= len(rows):
+            continue
+        row = rows[r]
+        if not row:
+            continue
+        key = row[0] or topscorer_keys[idx]
         for p in participants:
-            player_name = sheet.cell(row=r, column=p["col_idx"]).value
+            col_idx = p["col_idx"]
+            player_name = row[col_idx] if col_idx < len(row) else ""
             player_name = clean_name(player_name)
             p["topscorers"].append(player_name)
 
-    # 4. Read Champion Prediction (Row 80)
-    for p in participants:
-        p["champion"] = clean_name(sheet.cell(row=80, column=p["col_idx"]).value)
+    # 4. Read Champion Prediction (Row 80 in Excel, index 79 in CSV rows)
+    if len(rows) > 79:
+        row = rows[79]
+        for p in participants:
+            col_idx = p["col_idx"]
+            champ_val = row[col_idx] if col_idx < len(row) else ""
+            p["champion"] = clean_name(champ_val)
 
     # Auto-register new topscorers from predictions to actual_results.json if not present
     actual_results_changed = False
