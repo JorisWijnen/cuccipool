@@ -9,6 +9,45 @@ let participants = []; // Recalculated state for all participants
 let activeGroup = "Group A";
 let playerA = "";
 let playerB = "";
+let topscorerFilter = "";
+
+// Player flags mapping to their country flag emojis
+const playerFlags = {
+  "C. Gakpo": "🇳🇱",
+  "M. Depay": "🇳🇱",
+  "D. Dumfries": "🇳🇱",
+  "D. Malen": "🇳🇱",
+  "E. Haaland": "🇳🇴",
+  "F. Wirtz": "🇩🇪",
+  "J. Musiala": "🇩🇪",
+  "K. Havertz": "🇩🇪",
+  "D. Undav": "🇩🇪",
+  "H. Kane": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  "J. Bellingham": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  "K. Mbappe": "🇫🇷",
+  "O. Dembele": "🇫🇷",
+  "M. Olise": "🇫🇷",
+  "L. Messi": "🇦🇷",
+  "L. Martinez": "🇦🇷",
+  "J. Alvarez": "🇦🇷",
+  "L. Yamal": "🇪🇸",
+  "M. Oyarzabal": "🇪🇸",
+  "F. Torres": "🇪🇸",
+  "Vinicius Jr.": "🇧🇷",
+  "Neymar": "🇧🇷",
+  "M. Cunha": "🇧🇷",
+  "Raphinha": "🇧🇷",
+  "L. Paqueta": "🇧🇷",
+  "C. Ronaldo": "🇵🇹",
+  "C.Ronaldo": "🇵🇹",
+  "G. Ramos": "🇵🇹",
+  "B. Fernandes": "🇵🇹",
+  "M. Salah": "🇪🇬",
+  "R. Lukaku": "🇧🇪",
+  "E. Dzeko": "🇧🇦",
+  "R. Jimenez": "🇲🇽",
+  "B. Diaz": "🇲🇦"
+};
 
 // Match to Group Mapping
 const matchToGroup = {
@@ -199,9 +238,49 @@ function calculateMatchPoints(predStr, actStr) {
 function cleanName(name) {
   if (!name) return "";
   let s = name.trim();
-  if (/Mbapp/i.test(s)) {
-    return "K. Mbappé";
+  
+  // Strip accents using unicode NFD decomposition
+  s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  
+  // Clean up residual replacement characters
+  s = s.replace(/\uFFFD/g, "");
+  
+  // Replace common garbled patterns from encoding errors
+  s = s.replace(/Dembl/g, "Dembele");
+  s = s.replace(/Deko/g, "Dzeko");
+  s = s.replace(/Daz/g, "Diaz");
+  s = s.replace(/Jimnez/g, "Jimenez");
+  s = s.replace(/lvarez/g, "Alvarez");
+  s = s.replace(/Paquet/g, "Paqueta");
+  
+  // Match normalized lowercase representation for standard names
+  const normalized = s.replace(/\s+/g, "").toLowerCase();
+  
+  if (normalized === "cronaldo") {
+    return "C. Ronaldo";
   }
+  if (normalized.includes("mbapp")) {
+    return "K. Mbappe";
+  }
+  if (normalized.includes("dembel")) {
+    return "O. Dembele";
+  }
+  if (normalized.includes("dzek") || normalized.includes("deko")) {
+    return "E. Dzeko";
+  }
+  if (normalized.includes("jimenez")) {
+    return "R. Jimenez";
+  }
+  if (normalized.includes("diaz")) {
+    return "B. Diaz";
+  }
+  if (normalized.includes("alvarez")) {
+    return "J. Alvarez";
+  }
+  if (normalized.includes("paquet")) {
+    return "L. Paqueta";
+  }
+  
   return s;
 }
 
@@ -326,21 +405,41 @@ function renderTopscorersTab() {
   const container = document.getElementById("topscorers-list-container");
   container.innerHTML = "";
   
-  // Sort players alphabetically
-  const playerNames = Object.keys(actualResults.topscorers).sort();
+  // Get and sort players by goals (descending), then alphabetically
+  const sortedPlayers = Object.entries(actualResults.topscorers)
+    .map(([name, data]) => ({ name, ...data }))
+    .sort((a, b) => {
+      const goalsA = parseInt(a.goals) || 0;
+      const goalsB = parseInt(b.goals) || 0;
+      if (goalsB !== goalsA) {
+        return goalsB - goalsA;
+      }
+      return a.name.localeCompare(b.name);
+    });
+    
+  // Filter players by query
+  const filteredPlayers = sortedPlayers.filter(p => {
+    return p.name.toLowerCase().includes(topscorerFilter);
+  });
   
-  playerNames.forEach(name => {
-    const data = actualResults.topscorers[name];
-    const goals = data.goals;
-    const pos = data.position;
+  if (filteredPlayers.length === 0) {
+    container.innerHTML = `<div class="placeholder-text"><i class="fa-solid fa-circle-info"></i> No matching players found</div>`;
+    return;
+  }
+  
+  filteredPlayers.forEach(player => {
+    const name = player.name;
+    const goals = player.goals;
+    const pos = player.position;
     const mult = multiplierMap[pos] || 8;
     const points = goals * mult;
+    const flag = playerFlags[name] || "🏳️";
     
     const div = document.createElement("div");
     div.className = "topscorer-item";
     div.innerHTML = `
       <div class="player-info-meta">
-        <span class="player-name">${name}</span>
+        <span class="player-name">${flag} ${name}</span>
         <span class="player-position-pill pos-${pos}">${pos}</span>
       </div>
       <div class="player-controls">
@@ -389,6 +488,12 @@ window.onPlayerPositionChange = function(name, value) {
 window.onChampionChange = function(value) {
   actualResults.champion = value;
   recalculate();
+};
+
+// Search filter input change handler
+window.onTopscorerSearchChange = function(value) {
+  topscorerFilter = value.trim().toLowerCase();
+  renderTopscorersTab();
 };
 
 // Render Matches list in active group with comparison

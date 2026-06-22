@@ -75,7 +75,7 @@
   },
   "topscorers": {
     "C. Gakpo": {
-      "goals": 0,
+      "goals": 2,
       "position": "attacker"
     },
     "E. Haaland": {
@@ -98,7 +98,7 @@
       "goals": 2,
       "position": "midfielder"
     },
-    "K. Mbappé": {
+    "K. Mbappe": {
       "goals": 2,
       "position": "attacker"
     },
@@ -107,23 +107,23 @@
       "position": "attacker"
     },
     "L. Yamal": {
-      "goals": 0,
+      "goals": 1,
       "position": "attacker"
     },
-    "O. Dembélé": {
+    "O. Dembele": {
       "goals": 0,
       "position": "attacker"
     },
     "J. Bellingham": {
-      "goals": 0,
-      "position": "attacker"
+      "goals": 1,
+      "position": "midfielder"
     },
     "L. Martinez": {
       "goals": 0,
       "position": "attacker"
     },
     "Vinicius Jr.": {
-      "goals": 0,
+      "goals": 2,
       "position": "attacker"
     },
     "C. Ronaldo": {
@@ -139,7 +139,7 @@
       "position": "attacker"
     },
     "M. Salah": {
-      "goals": 0,
+      "goals": 1,
       "position": "attacker"
     },
     "M. Olise": {
@@ -147,7 +147,7 @@
       "position": "attacker"
     },
     "M. Oyarzabal": {
-      "goals": 0,
+      "goals": 2,
       "position": "attacker"
     },
     "G. Ramos": {
@@ -155,7 +155,7 @@
       "position": "attacker"
     },
     "D. Undav": {
-      "goals": 0,
+      "goals": 3,
       "position": "attacker"
     },
     "R. Lukaku": {
@@ -171,7 +171,7 @@
       "position": "attacker"
     },
     "M. Cunha": {
-      "goals": 0,
+      "goals": 2,
       "position": "attacker"
     },
     "Raphinha": {
@@ -186,23 +186,23 @@
       "goals": 0,
       "position": "attacker"
     },
-    "E. Deko": {
+    "E. Dzeko": {
       "goals": 0,
       "position": "attacker"
     },
-    "R. Jiménez": {
+    "R. Jimenez": {
+      "goals": 1,
+      "position": "attacker"
+    },
+    "B. Diaz": {
       "goals": 0,
       "position": "attacker"
     },
-    "B. Díaz": {
+    "J. Alvarez": {
       "goals": 0,
       "position": "attacker"
     },
-    "J. Álvarez": {
-      "goals": 0,
-      "position": "attacker"
-    },
-    "L. Paquetá": {
+    "L. Paqueta": {
       "goals": 0,
       "position": "attacker"
     }

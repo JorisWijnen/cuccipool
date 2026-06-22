@@ -423,12 +423,45 @@ tbody tr:hover {
   margin-bottom: 1.25rem;
 }
 
+/* Search Filter Container */
+.search-filter-container {
+  position: relative;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.search-filter-container i {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.search-filter-container input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 0.625rem 1rem 0.625rem 2.5rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-filter-container input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.15);
+}
+
 /* Topscorers Admin List */
 .topscorers-list {
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
-  max-height: 400px;
+  max-height: 600px;
   overflow-y: auto;
   padding-right: 0.5rem;
 }

@@ -92,6 +92,10 @@
         <!-- Topscorers Panel -->
         <div id="topscorers-tab" class="tab-content active">
           <p class="section-desc">Set actual goals scored by predicted topscorers. Multipliers: Attacker (8x), Midfielder (16x), Defender (32x).</p>
+          <div class="search-filter-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="topscorer-search-input" placeholder="Search topscorer..." oninput="onTopscorerSearchChange(this.value)">
+          </div>
           <div class="topscorers-list" id="topscorers-list-container">
             <!-- Dynamically populated -->
             <div class="placeholder-text"><i class="fa-solid fa-spinner fa-spin"></i> Loading topscorers...</div>

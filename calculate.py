@@ -43,10 +43,44 @@ def clean_name(name):
     if not name:
         return ""
     name_str = str(name).strip()
-    import re
-    if re.search(r'Mbapp', name_str, re.IGNORECASE):
-        return "K. Mbappé"
-    return name_str
+    
+    # Strip accents
+    import unicodedata
+    nfkd_form = unicodedata.normalize('NFKD', name_str)
+    only_ascii = "".join([c for c in nfkd_form if not unicodedata.combining(c)])
+    
+    # Clean up residual replacement characters
+    only_ascii = only_ascii.replace("\uFFFD", "")
+    
+    # Replace common garbled patterns from encoding errors
+    only_ascii = only_ascii.replace("Dembl", "Dembele")
+    only_ascii = only_ascii.replace("Deko", "Dzeko")
+    only_ascii = only_ascii.replace("Daz", "Diaz")
+    only_ascii = only_ascii.replace("Jimnez", "Jimenez")
+    only_ascii = only_ascii.replace("lvarez", "Alvarez")
+    only_ascii = only_ascii.replace("Paquet", "Paqueta")
+    
+    # Match normalized lowercase representation for standard names
+    normalized = only_ascii.replace(" ", "").lower()
+    
+    if normalized == "cronaldo":
+        return "C. Ronaldo"
+    if "mbapp" in normalized:
+        return "K. Mbappe"
+    if "dembel" in normalized:
+        return "O. Dembele"
+    if "dzek" in normalized or "deko" in normalized:
+        return "E. Dzeko"
+    if "jimenez" in normalized:
+        return "R. Jimenez"
+    if "diaz" in normalized:
+        return "B. Diaz"
+    if "alvarez" in normalized:
+        return "J. Alvarez"
+    if "paquet" in normalized:
+        return "L. Paqueta"
+        
+    return only_ascii
 
 def main():
     # Use the directory containing the script to dynamically locate project files
