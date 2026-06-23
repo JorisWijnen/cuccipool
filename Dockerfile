@@ -14,5 +14,5 @@ COPY . .
 # Expose the port python -m http.server uses by default
 EXPOSE 8800
 
-# Start the simple HTTP server to serve the dashboard
-CMD ["python", "-m", "http.server", "8800"]
+# Start the custom HTTP server to support saving scores
+CMD ["python", "server.py"]

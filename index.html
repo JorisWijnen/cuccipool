@@ -140,28 +140,22 @@
           <h2>Match Predictions & Head-to-Head</h2>
         </div>
         <div class="player-selectors">
-          <div class="selector-group">
-            <label for="player-a-select">Player 1</label>
-            <select id="player-a-select" onchange="onPlayerSelectChange()"></select>
-          </div>
-          <div class="vs-divider">VS</div>
-          <div class="selector-group">
-            <label for="player-b-select">Player 2</label>
-            <select id="player-b-select" onchange="onPlayerSelectChange()"></select>
-          </div>
+          <button class="btn btn-secondary select-compare-btn" onclick="openComparePopup()" style="width: auto;">
+            <i class="fa-solid fa-users-viewfinder"></i> Compare Players (<span id="compare-count">2</span>)
+          </button>
         </div>
       </div>
 
       <div class="matches-layout">
-        <!-- Sidebar Groups Navigation -->
-        <nav class="groups-nav" id="groups-navigation">
-          <!-- Dynamically populated group links -->
+        <!-- Sidebar Rounds Navigation -->
+        <nav class="rounds-nav" id="rounds-navigation">
+          <!-- Dynamically populated round links -->
         </nav>
 
         <!-- Matches Grid Container -->
         <div class="matches-grid-wrapper">
           <div class="group-header-banner">
-            <h3 id="active-group-title">Group A</h3>
+            <h3 id="active-round-title">Round 1</h3>
             <span class="group-rules-info">Exact = 45 pts | Winner/Draw = 30 pts</span>
           </div>
           <div class="matches-grid" id="matches-grid-container">
@@ -171,6 +165,36 @@
         </div>
       </div>
     </section>
+
+    <!-- Comparison Player Selector Modal -->
+    <div id="compare-modal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3><i class="fa-solid fa-users"></i> Compare Predictions</h3>
+          <button class="close-btn" onclick="closeComparePopup()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="section-desc" style="margin-bottom: 0.75rem;">Select the players whose predictions you want to display side-by-side on the match cards.</p>
+          <div class="modal-controls">
+            <div class="search-filter-container" style="margin-bottom: 0;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="compare-search-input" placeholder="Search player..." oninput="filterComparePlayers(this.value)">
+            </div>
+            <div class="bulk-actions">
+              <button class="btn btn-outline btn-xs" onclick="selectBulkCompare('all')">Select All</button>
+              <button class="btn btn-outline btn-xs" onclick="selectBulkCompare('none')">Clear All</button>
+            </div>
+          </div>
+          <div class="compare-players-list" id="compare-players-list-container">
+            <!-- Dynamically populated checkboxes -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeComparePopup()">Cancel</button>
+          <button class="btn btn-primary" onclick="applyCompareSelection()">Apply Selection</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer class="main-footer">

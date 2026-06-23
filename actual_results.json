@@ -40,10 +40,10 @@
     "BEL-IRN": "0-0",
     "URU-CPV": "2-2",
     "NZL-EGY": "1-3",
-    "ARG-AUT": "",
-    "FRA-IRK": "",
-    "NOO-SEN": "",
-    "JOR-ALG": "",
+    "ARG-AUT": "2-0",
+    "FRA-IRK": "3-0",
+    "NOO-SEN": "3-2",
+    "JOR-ALG": "1-2",
     "POR-OEZ": "",
     "ENG-GHA": "",
     "PAN-CRO": "",
@@ -79,7 +79,7 @@
       "position": "attacker"
     },
     "E. Haaland": {
-      "goals": 2,
+      "goals": 4,
       "position": "attacker"
     },
     "F. Wirtz": {
@@ -99,11 +99,11 @@
       "position": "midfielder"
     },
     "K. Mbappe": {
-      "goals": 2,
+      "goals": 4,
       "position": "attacker"
     },
     "L. Messi": {
-      "goals": 3,
+      "goals": 5,
       "position": "attacker"
     },
     "L. Yamal": {
@@ -111,7 +111,7 @@
       "position": "attacker"
     },
     "O. Dembele": {
-      "goals": 0,
+      "goals": 1,
       "position": "attacker"
     },
     "J. Bellingham": {

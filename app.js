@@ -6,75 +6,194 @@ let actualResults = {
   champion: ""
 };
 let participants = []; // Recalculated state for all participants
-let activeGroup = "Group A";
-let playerA = "";
-let playerB = "";
+let activeRound = "Round 1";
+let selectedPlayers = [];
 let topscorerFilter = "";
+let compareSearchQuery = "";
 
-// Player flags mapping to their country flag emojis
-const playerFlags = {
-  "C. Gakpo": "🇳🇱",
-  "M. Depay": "🇳🇱",
-  "D. Dumfries": "🇳🇱",
-  "D. Malen": "🇳🇱",
-  "E. Haaland": "🇳🇴",
-  "F. Wirtz": "🇩🇪",
-  "J. Musiala": "🇩🇪",
-  "K. Havertz": "🇩🇪",
-  "D. Undav": "🇩🇪",
-  "H. Kane": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  "J. Bellingham": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  "K. Mbappe": "🇫🇷",
-  "O. Dembele": "🇫🇷",
-  "M. Olise": "🇫🇷",
-  "L. Messi": "🇦🇷",
-  "L. Martinez": "🇦🇷",
-  "J. Alvarez": "🇦🇷",
-  "L. Yamal": "🇪🇸",
-  "M. Oyarzabal": "🇪🇸",
-  "F. Torres": "🇪🇸",
-  "Vinicius Jr.": "🇧🇷",
-  "Neymar": "🇧🇷",
-  "M. Cunha": "🇧🇷",
-  "Raphinha": "🇧🇷",
-  "L. Paqueta": "🇧🇷",
-  "C. Ronaldo": "🇵🇹",
-  "C.Ronaldo": "🇵🇹",
-  "G. Ramos": "🇵🇹",
-  "B. Fernandes": "🇵🇹",
-  "M. Salah": "🇪🇬",
-  "R. Lukaku": "🇧🇪",
-  "E. Dzeko": "🇧🇦",
-  "R. Jimenez": "🇲🇽",
-  "B. Diaz": "🇲🇦"
+// Player-to-country flag ISO codes mapping (lowercase for flagcdn.com)
+const playerCountries = {
+  "C. Gakpo": "nl",
+  "M. Depay": "nl",
+  "D. Dumfries": "nl",
+  "D. Malen": "nl",
+  "E. Haaland": "no",
+  "F. Wirtz": "de",
+  "J. Musiala": "de",
+  "K. Havertz": "de",
+  "D. Undav": "de",
+  "H. Kane": "gb-eng",
+  "J. Bellingham": "gb-eng",
+  "K. Mbappe": "fr",
+  "O. Dembele": "fr",
+  "M. Olise": "fr",
+  "L. Messi": "ar",
+  "L. Martinez": "ar",
+  "J. Alvarez": "ar",
+  "L. Yamal": "es",
+  "M. Oyarzabal": "es",
+  "F. Torres": "es",
+  "Vinicius Jr.": "br",
+  "Neymar": "br",
+  "M. Cunha": "br",
+  "Raphinha": "br",
+  "L. Paqueta": "br",
+  "C. Ronaldo": "pt",
+  "C.Ronaldo": "pt",
+  "G. Ramos": "pt",
+  "B. Fernandes": "pt",
+  "M. Salah": "eg",
+  "R. Lukaku": "be",
+  "E. Dzeko": "ba",
+  "R. Jimenez": "mx",
+  "B. Diaz": "ma"
 };
 
-// Match to Group Mapping
-const matchToGroup = {
-  // Group A
-  "MEX-ZAF": "Group A", "ZKO-CZE": "Group A", "CZE-ZAF": "Group A", "MEX-ZKO": "Group A", "ZAF-ZKO": "Group A", "CZE-MEX": "Group A",
-  // Group B
-  "CAN-BOS": "Group B", "QAT-SUI": "Group B", "CAN-QAT": "Group B", "SUI-BOS": "Group B", "SUI-CAN": "Group B", "BOS-QAT": "Group B",
-  // Group C
-  "BRA-MAR": "Group C", "HAI-SCO": "Group C", "SCO-MAR": "Group C", "BRA-HAI": "Group C", "MAR-HAI": "Group C", "SCO-BRA": "Group C",
-  // Group D
-  "USA-PAR": "Group D", "AUS-TUR": "Group D", "TUR-PAR": "Group D", "USA-AUS": "Group D", "PAR-AUS": "Group D", "TUR-USA": "Group D",
-  // Group E
-  "GER-CUW": "Group E", "IVO-ECU": "Group E", "GER-IVO": "Group E", "ECU-CUW": "Group E", "CUW-IVO": "Group E", "ECU-GER": "Group E",
-  // Group F
-  "NED-JAP": "Group F", "SWE-TUN": "Group F", "TUN-JAP": "Group F", "NED-SWE": "Group F", "TUN-NED": "Group F", "JAP-SWE": "Group F",
-  // Group G
-  "ESP-CPV": "Group G", "SAR-URU": "Group G", "ESP-SAR": "Group G", "URU-CPV": "Group G", "URU-ESP": "Group G", "CPV-SAR": "Group G",
-  // Group H
-  "BEL-EGY": "Group H", "IRN-NZL": "Group H", "BEL-IRN": "Group H", "NZL-EGY": "Group H", "EGY-IRN": "Group H", "NZL-BEL": "Group H",
-  // Group I
-  "FRA-SEN": "Group I", "IRK-NOO": "Group I", "FRA-IRK": "Group I", "NOO-SEN": "Group I", "NOO-FRA": "Group I", "SEN-IRK": "Group I",
-  // Group J
-  "ARG-ALG": "Group J", "AUT-JOR": "Group J", "ARG-AUT": "Group J", "JOR-ALG": "Group J", "JOR-ARG": "Group J", "ALG-AUT": "Group J",
-  // Group K
-  "POR-COD": "Group K", "OEZ-COL": "Group K", "POR-OEZ": "Group K", "COL-COD": "Group K", "COD-OEZ": "Group K", "COL-POR": "Group K",
-  // Group L
-  "ENG-CRO": "Group L", "GHA-PAN": "Group L", "ENG-GHA": "Group L", "PAN-CRO": "Group L", "CRO-GHA": "Group L", "PAN-ENG": "Group L"
+// Team code to ISO flag mappings (lowercase for flagcdn.com)
+const teamFlags = {
+  "MEX": "mx", "ZAF": "za", "ZKO": "kr", "CZE": "cz", "CAN": "ca",
+  "BOS": "ba", "QAT": "qa", "SUI": "ch", "BRA": "br", "MAR": "ma",
+  "HAI": "ht", "SCO": "gb-sct", "USA": "us", "PAR": "py", "AUS": "au",
+  "TUR": "tr", "GER": "de", "CUW": "cw", "IVO": "ci", "ECU": "ec",
+  "NED": "nl", "JAP": "jp", "SWE": "se", "TUN": "tn", "ESP": "es",
+  "CPV": "cv", "SAR": "sa", "URU": "uy", "BEL": "be", "EGY": "eg",
+  "IRN": "ir", "NZL": "nz", "FRA": "fr", "SEN": "sn", "IRK": "iq",
+  "NOO": "no", "ARG": "ar", "ALG": "dz", "AUT": "at", "JOR": "jo",
+  "POR": "pt", "COD": "cd", "OEZ": "uz", "COL": "co", "ENG": "gb-eng",
+  "CRO": "hr", "GHA": "gh", "PAN": "pa"
+};
+
+// Team code to full country names mapping
+const teamNames = {
+  "MEX": "Mexico",
+  "ZAF": "South Africa",
+  "ZKO": "South Korea",
+  "CZE": "Czech Republic",
+  "CAN": "Canada",
+  "BOS": "Bosnia & Herzegovina",
+  "QAT": "Qatar",
+  "SUI": "Switzerland",
+  "BRA": "Brazil",
+  "MAR": "Morocco",
+  "HAI": "Haiti",
+  "SCO": "Scotland",
+  "USA": "United States",
+  "PAR": "Paraguay",
+  "AUS": "Australia",
+  "TUR": "Turkey",
+  "GER": "Germany",
+  "CUW": "Curaçao",
+  "IVO": "Ivory Coast",
+  "ECU": "Ecuador",
+  "NED": "Netherlands",
+  "JAP": "Japan",
+  "SWE": "Sweden",
+  "TUN": "Tunisia",
+  "ESP": "Spain",
+  "CPV": "Cape Verde",
+  "SAR": "Saudi Arabia",
+  "URU": "Uruguay",
+  "BEL": "Belgium",
+  "EGY": "Egypt",
+  "IRN": "Iran",
+  "NZL": "New Zealand",
+  "FRA": "France",
+  "SEN": "Senegal",
+  "IRK": "Iraq",
+  "NOO": "Norway",
+  "ARG": "Argentina",
+  "ALG": "Algeria",
+  "AUT": "Austria",
+  "JOR": "Jordan",
+  "POR": "Portugal",
+  "COD": "DR Congo",
+  "OEZ": "Uzbekistan",
+  "COL": "Colombia",
+  "ENG": "England",
+  "CRO": "Croatia",
+  "GHA": "Ghana",
+  "PAN": "Panama"
+};
+
+// Match Schedule Mapping (Rounds, dates, times, and order)
+const matchSchedule = {
+  // Round 1
+  "MEX-ZAF": { round: "Round 1", date: "June 11, 2026", time: "21:00", order: 1 },
+  "ZKO-CZE": { round: "Round 1", date: "June 12, 2026", time: "04:00", order: 2 },
+  "CAN-BOS": { round: "Round 1", date: "June 12, 2026", time: "21:00", order: 3 },
+  "QAT-SUI": { round: "Round 1", date: "June 13, 2026", time: "00:00", order: 4 },
+  "USA-PAR": { round: "Round 1", date: "June 13, 2026", time: "03:00", order: 5 },
+  "BRA-MAR": { round: "Round 1", date: "June 13, 2026", time: "21:00", order: 6 },
+  "HAI-SCO": { round: "Round 1", date: "June 14, 2026", time: "00:00", order: 7 },
+  "AUS-TUR": { round: "Round 1", date: "June 14, 2026", time: "03:00", order: 8 },
+  "GER-CUW": { round: "Round 1", date: "June 14, 2026", time: "19:00", order: 9 },
+  "NED-JAP": { round: "Round 1", date: "June 14, 2026", time: "22:00", order: 10 },
+  "IVO-ECU": { round: "Round 1", date: "June 15, 2026", time: "01:00", order: 11 },
+  "SWE-TUN": { round: "Round 1", date: "June 15, 2026", time: "04:00", order: 12 },
+  "ESP-CPV": { round: "Round 1", date: "June 15, 2026", time: "19:00", order: 13 },
+  "BEL-EGY": { round: "Round 1", date: "June 15, 2026", time: "22:00", order: 14 },
+  "SAR-URU": { round: "Round 1", date: "June 16, 2026", time: "01:00", order: 15 },
+  "IRN-NZL": { round: "Round 1", date: "June 16, 2026", time: "04:00", order: 16 },
+  "FRA-SEN": { round: "Round 1", date: "June 16, 2026", time: "19:00", order: 17 },
+  "IRK-NOO": { round: "Round 1", date: "June 16, 2026", time: "22:00", order: 18 },
+  "ARG-ALG": { round: "Round 1", date: "June 17, 2026", time: "01:00", order: 19 },
+  "AUT-JOR": { round: "Round 1", date: "June 17, 2026", time: "04:00", order: 20 },
+  "POR-COD": { round: "Round 1", date: "June 17, 2026", time: "19:00", order: 21 },
+  "ENG-CRO": { round: "Round 1", date: "June 17, 2026", time: "22:00", order: 22 },
+  "GHA-PAN": { round: "Round 1", date: "June 18, 2026", time: "01:00", order: 23 },
+  "OEZ-COL": { round: "Round 1", date: "June 18, 2026", time: "04:00", order: 24 },
+
+  // Round 2
+  "CZE-ZAF": { round: "Round 2", date: "June 18, 2026", time: "19:00", order: 25 },
+  "SUI-BOS": { round: "Round 2", date: "June 18, 2026", time: "22:00", order: 26 },
+  "CAN-QAT": { round: "Round 2", date: "June 19, 2026", time: "01:00", order: 27 },
+  "MEX-ZKO": { round: "Round 2", date: "June 19, 2026", time: "04:00", order: 28 },
+  "USA-AUS": { round: "Round 2", date: "June 19, 2026", time: "19:00", order: 29 },
+  "SCO-MAR": { round: "Round 2", date: "June 19, 2026", time: "22:00", order: 30 },
+  "BRA-HAI": { round: "Round 2", date: "June 20, 2026", time: "01:00", order: 31 },
+  "TUR-PAR": { round: "Round 2", date: "June 20, 2026", time: "04:00", order: 32 },
+  "NED-SWE": { round: "Round 2", date: "June 20, 2026", time: "19:00", order: 33 },
+  "GER-IVO": { round: "Round 2", date: "June 20, 2026", time: "22:00", order: 34 },
+  "ECU-CUW": { round: "Round 2", date: "June 21, 2026", time: "01:00", order: 35 },
+  "TUN-JAP": { round: "Round 2", date: "June 21, 2026", time: "04:00", order: 36 },
+  "ESP-SAR": { round: "Round 2", date: "June 21, 2026", time: "19:00", order: 37 },
+  "BEL-IRN": { round: "Round 2", date: "June 21, 2026", time: "22:00", order: 38 },
+  "URU-CPV": { round: "Round 2", date: "June 22, 2026", time: "01:00", order: 39 },
+  "NZL-EGY": { round: "Round 2", date: "June 22, 2026", time: "04:00", order: 40 },
+  "ARG-AUT": { round: "Round 2", date: "June 22, 2026", time: "19:00", order: 41 },
+  "FRA-IRK": { round: "Round 2", date: "June 22, 2026", time: "22:00", order: 42 },
+  "NOO-SEN": { round: "Round 2", date: "June 23, 2026", time: "01:00", order: 43 },
+  "JOR-ALG": { round: "Round 2", date: "June 23, 2026", time: "04:00", order: 44 },
+  "POR-OEZ": { round: "Round 2", date: "June 23, 2026", time: "19:00", order: 45 },
+  "ENG-GHA": { round: "Round 2", date: "June 23, 2026", time: "22:00", order: 46 },
+  "PAN-CRO": { round: "Round 2", date: "June 24, 2026", time: "01:00", order: 47 },
+  "COL-COD": { round: "Round 2", date: "June 24, 2026", time: "04:00", order: 48 },
+
+  // Round 3
+  "SUI-CAN": { round: "Round 3", date: "June 24, 2026", time: "22:00", order: 49 },
+  "BOS-QAT": { round: "Round 3", date: "June 24, 2026", time: "22:00", order: 50 },
+  "MAR-HAI": { round: "Round 3", date: "June 25, 2026", time: "01:00", order: 51 },
+  "SCO-BRA": { round: "Round 3", date: "June 25, 2026", time: "01:00", order: 52 },
+  "ZAF-ZKO": { round: "Round 3", date: "June 25, 2026", time: "04:00", order: 53 },
+  "CZE-MEX": { round: "Round 3", date: "June 25, 2026", time: "04:00", order: 54 },
+  "CUW-IVO": { round: "Round 3", date: "June 25, 2026", time: "22:00", order: 55 },
+  "ECU-GER": { round: "Round 3", date: "June 25, 2026", time: "22:00", order: 56 },
+  "TUN-NED": { round: "Round 3", date: "June 26, 2026", time: "01:00", order: 57 },
+  "JAP-SWE": { round: "Round 3", date: "June 26, 2026", time: "01:00", order: 58 },
+  "PAR-AUS": { round: "Round 3", date: "June 26, 2026", time: "04:00", order: 59 },
+  "TUR-USA": { round: "Round 3", date: "June 26, 2026", time: "04:00", order: 60 },
+  "NOO-FRA": { round: "Round 3", date: "June 26, 2026", time: "22:00", order: 61 },
+  "SEN-IRK": { round: "Round 3", date: "June 26, 2026", time: "22:00", order: 62 },
+  "URU-ESP": { round: "Round 3", date: "June 27, 2026", time: "01:00", order: 63 },
+  "CPV-SAR": { round: "Round 3", date: "June 27, 2026", time: "01:00", order: 64 },
+  "EGY-IRN": { round: "Round 3", date: "June 27, 2026", time: "04:00", order: 65 },
+  "NZL-BEL": { round: "Round 3", date: "June 27, 2026", time: "04:00", order: 66 },
+  "CRO-GHA": { round: "Round 3", date: "June 27, 2026", time: "22:00", order: 67 },
+  "PAN-ENG": { round: "Round 3", date: "June 27, 2026", time: "22:00", order: 68 },
+  "COD-OEZ": { round: "Round 3", date: "June 28, 2026", time: "01:00", order: 69 },
+  "COL-POR": { round: "Round 3", date: "June 28, 2026", time: "01:00", order: 70 },
+  "JOR-ARG": { round: "Round 3", date: "June 28, 2026", time: "04:00", order: 71 },
+  "ALG-AUT": { round: "Round 3", date: "June 28, 2026", time: "04:00", order: 72 }
 };
 
 // Points multiplier
@@ -87,6 +206,36 @@ const multiplierMap = {
 // Start execution when DOM loaded
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
+  
+  // Poll for updates from server every 10 seconds to keep clients in sync
+  setInterval(async () => {
+    try {
+      const actualRes = await fetch("actual_results.json?t=" + new Date().getTime()).then(res => res.json());
+      
+      // Only reload if changes are detected to avoid disrupting user input focus
+      if (JSON.stringify(actualResults) !== JSON.stringify(actualRes)) {
+        // Safety: check if user is currently typing in an input to avoid resetting their UI
+        const isEditingMatches = document.activeElement && document.activeElement.classList.contains("actual-score-input");
+        const isEditingGoals = document.activeElement && document.activeElement.closest(".goals-input-wrapper");
+        const isEditingChamp = document.activeElement && document.activeElement.id === "actual-champion-input";
+        
+        if (isEditingMatches || isEditingGoals || isEditingChamp) {
+          // Defer update to avoid disrupting user input
+          return;
+        }
+        
+        const leaderboardRes = await fetch("leaderboard.json?t=" + new Date().getTime()).then(res => res.json());
+        leaderboardData = leaderboardRes;
+        actualResults = actualRes;
+        participants = JSON.parse(JSON.stringify(leaderboardData.participantsDetails));
+        
+        document.getElementById("actual-champion-input").value = actualResults.champion || "";
+        recalculate();
+      }
+    } catch (error) {
+      console.warn("Real-time synchronization polling failed:", error);
+    }
+  }, 10000);
 });
 
 // Load JSON data from server
@@ -103,13 +252,15 @@ async function loadData() {
     // Initialize participants detailed state
     participants = JSON.parse(JSON.stringify(leaderboardData.participantsDetails));
     
-    // Set up dropdown selectors
+    // Set up comparison list and default selection (first 2 players)
     const participantNames = participants.map(p => p.name);
-    playerA = participantNames[0] || "";
-    playerB = participantNames[1] || playerA;
+    selectedPlayers = [participantNames[0], participantNames[1]].filter(Boolean);
+    const compareCountEl = document.getElementById("compare-count");
+    if (compareCountEl) {
+      compareCountEl.textContent = selectedPlayers.length;
+    }
 
-    populateDropdowns(participantNames);
-    buildGroupNavigation();
+    buildRoundNavigation();
     
     // Fill the actual champion in the input field
     document.getElementById("actual-champion-input").value = actualResults.champion || "";
@@ -140,48 +291,121 @@ function showErrorMessage() {
   `;
 }
 
-// Populate players selectors dropdown
-function populateDropdowns(names) {
-  const selectA = document.getElementById("player-a-select");
-  const selectB = document.getElementById("player-b-select");
+// Open and close Compare Players Modal
+window.openComparePopup = function() {
+  compareSearchQuery = "";
+  const searchInput = document.getElementById("compare-search-input");
+  if (searchInput) searchInput.value = "";
+  renderComparePlayersList();
+  document.getElementById("compare-modal").classList.add("active");
+};
+
+window.closeComparePopup = function() {
+  document.getElementById("compare-modal").classList.remove("active");
+};
+
+// Bulk select comparison players (all or none)
+window.selectBulkCompare = function(type) {
+  const container = document.getElementById("compare-players-list-container");
+  if (!container) return;
+  const checkboxes = container.querySelectorAll("input[type='checkbox']");
+  checkboxes.forEach(cb => {
+    cb.checked = (type === 'all');
+    const label = cb.closest(".compare-player-checkbox-item");
+    if (label) {
+      if (type === 'all') {
+        label.classList.add("checked");
+      } else {
+        label.classList.remove("checked");
+      }
+    }
+  });
+};
+
+// Toggle class on checkbox state change
+window.toggleCompareCheckboxClass = function(cb) {
+  const item = cb.closest(".compare-player-checkbox-item");
+  if (item) {
+    if (cb.checked) {
+      item.classList.add("checked");
+    } else {
+      item.classList.remove("checked");
+    }
+  }
+};
+
+// Filter compare players checklist by search input
+window.filterComparePlayers = function(query) {
+  compareSearchQuery = query.trim().toLowerCase();
+  renderComparePlayersList();
+};
+
+function renderComparePlayersList() {
+  const container = document.getElementById("compare-players-list-container");
+  if (!container) return;
+  container.innerHTML = "";
   
-  selectA.innerHTML = "";
-  selectB.innerHTML = "";
+  // Sort participants by name for easy searching
+  const sortedParticipants = [...participants].sort((a, b) => a.name.localeCompare(b.name));
   
-  names.forEach(name => {
-    const optA = document.createElement("option");
-    optA.value = name;
-    optA.textContent = name;
-    optA.selected = (name === playerA);
-    selectA.appendChild(optA);
-    
-    const optB = document.createElement("option");
-    optB.value = name;
-    optB.textContent = name;
-    optB.selected = (name === playerB);
-    selectB.appendChild(optB);
+  sortedParticipants.forEach(p => {
+    if (compareSearchQuery && !p.name.toLowerCase().includes(compareSearchQuery)) {
+      return;
+    }
+    const isSelected = selectedPlayers.includes(p.name);
+    const item = document.createElement("label");
+    item.className = `compare-player-checkbox-item ${isSelected ? "checked" : ""}`;
+    item.innerHTML = `
+      <input type="checkbox" value="${p.name}" ${isSelected ? "checked" : ""} onchange="toggleCompareCheckboxClass(this)">
+      <span title="${p.name}">${p.name}</span>
+    `;
+    container.appendChild(item);
   });
 }
 
-// Group Navigation Menu (A - L)
-function buildGroupNavigation() {
-  const nav = document.getElementById("groups-navigation");
+window.applyCompareSelection = function() {
+  const container = document.getElementById("compare-players-list-container");
+  if (!container) return;
+  
+  const selected = [];
+  container.querySelectorAll("input[type='checkbox']:checked").forEach(cb => {
+    selected.push(cb.value);
+  });
+  
+  if (selected.length === 0) {
+    alert("Please select at least one player to compare.");
+    return;
+  }
+  
+  selectedPlayers = selected;
+  const compareCountEl = document.getElementById("compare-count");
+  if (compareCountEl) {
+    compareCountEl.textContent = selectedPlayers.length;
+  }
+  closeComparePopup();
+  renderActiveRoundMatches();
+};
+
+// Round Navigation Menu (Round 1 - 3)
+function buildRoundNavigation() {
+  const nav = document.getElementById("rounds-navigation");
+  if (!nav) return;
   nav.innerHTML = "";
   
-  const groups = ["Group A", "Group B", "Group C", "Group D", "Group E", "Group F", "Group G", "Group H", "Group I", "Group J", "Group K", "Group L"];
+  const rounds = ["Round 1", "Round 2", "Round 3"];
   
-  groups.forEach(group => {
+  rounds.forEach(round => {
     const btn = document.createElement("button");
-    btn.className = `group-nav-link ${group === activeGroup ? "active" : ""}`;
+    btn.className = `round-nav-link ${round === activeRound ? "active" : ""}`;
     btn.innerHTML = `
-      <span>${group}</span>
+      <span>${round}</span>
       <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem; opacity: 0.5;"></i>
     `;
     btn.onclick = () => {
-      document.querySelectorAll(".group-nav-link").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".round-nav-link").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      activeGroup = group;
-      renderActiveGroupMatches();
+      activeRound = round;
+      renderActiveRoundMatches();
     };
     nav.appendChild(btn);
   });
@@ -336,7 +560,7 @@ function recalculate() {
     p.totalGoals = totalGoals;
     
     // Champion points calculation
-    const isCorrectChamp = actualChamp && (cleanName(p.predictions.champion.predicted).toLowerCase() === actualChamp.lower());
+    const isCorrectChamp = actualChamp && (cleanName(p.predictions.champion.predicted).toLowerCase() === actualChamp.toLowerCase());
     p.championPoints = isCorrectChamp ? 250 : 0;
     p.predictions.champion.points = p.championPoints;
     p.predictions.champion.correct = isCorrectChamp;
@@ -356,10 +580,37 @@ function recalculate() {
   // 2. Render UI Components
   renderLeaderboard();
   renderTopscorersTab();
-  renderActiveGroupMatches();
+  renderActiveRoundMatches();
   
   // Set last updated time
   document.getElementById("last-updated-time").textContent = new Date().toLocaleTimeString();
+}
+
+// Save actual results to server and trigger calculation sync
+async function saveActualResults() {
+  try {
+    const response = await fetch("/api/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(actualResults)
+    });
+    if (!response.ok) {
+      throw new Error("Failed to save actual results to server");
+    }
+    console.log("Successfully saved actual results to server.");
+    
+    // Fetch updated leaderboard from server (regenerated by server.py calling calculate.py)
+    const leaderboardRes = await fetch("leaderboard.json?t=" + new Date().getTime()).then(res => res.json());
+    leaderboardData = leaderboardRes;
+    participants = JSON.parse(JSON.stringify(leaderboardData.participantsDetails));
+    
+    // Re-render leaderboard standings
+    renderLeaderboard();
+  } catch (error) {
+    console.error("Error saving actual results:", error);
+  }
 }
 
 // Render Standings Leaderboard Table
@@ -395,9 +646,12 @@ function renderLeaderboard() {
 
 // Select a player in comparison panel
 function selectPlayerForCompare(name) {
-  playerA = name;
-  document.getElementById("player-a-select").value = name;
-  onPlayerSelectChange();
+  selectedPlayers = [name];
+  const compareCountEl = document.getElementById("compare-count");
+  if (compareCountEl) {
+    compareCountEl.textContent = selectedPlayers.length;
+  }
+  renderActiveRoundMatches();
 }
 
 // Render Topscorers Editor List
@@ -433,13 +687,25 @@ function renderTopscorersTab() {
     const pos = player.position;
     const mult = multiplierMap[pos] || 8;
     const points = goals * mult;
-    const flag = playerFlags[name] || "🏳️";
     
     const div = document.createElement("div");
     div.className = "topscorer-item";
+    
+    // Set flag background styling
+    const playerCountry = playerCountries[name] || "un";
+    if (playerCountry !== "un") {
+      div.style.backgroundImage = `
+        linear-gradient(to right, rgba(12, 18, 36, 0.93) 30%, rgba(12, 18, 36, 0.6) 100%),
+        url(https://flagcdn.com/w160/${playerCountry}.png)
+      `;
+      div.style.backgroundPosition = "right center";
+      div.style.backgroundSize = "auto 100%";
+      div.style.backgroundRepeat = "no-repeat";
+    }
+    
     div.innerHTML = `
       <div class="player-info-meta">
-        <span class="player-name">${flag} ${name}</span>
+        <span class="player-name">${name}</span>
         <span class="player-position-pill pos-${pos}">${pos}</span>
       </div>
       <div class="player-controls">
@@ -468,6 +734,7 @@ window.adjustGoals = function(name, amount) {
   const newGoals = Math.max(0, currentGoals + amount);
   actualResults.topscorers[name].goals = newGoals;
   recalculate();
+  saveActualResults();
 };
 
 // Goals input changed
@@ -476,18 +743,21 @@ window.onPlayerGoalsChange = function(name, value) {
   if (isNaN(val) || val < 0) val = 0;
   actualResults.topscorers[name].goals = val;
   recalculate();
+  saveActualResults();
 };
 
 // Position dropdown changed
 window.onPlayerPositionChange = function(name, value) {
   actualResults.topscorers[name].position = value;
   recalculate();
+  saveActualResults();
 };
 
 // Champion input changed
 window.onChampionChange = function(value) {
   actualResults.champion = value;
   recalculate();
+  saveActualResults();
 };
 
 // Search filter input change handler
@@ -496,60 +766,80 @@ window.onTopscorerSearchChange = function(value) {
   renderTopscorersTab();
 };
 
-// Render Matches list in active group with comparison
-function renderActiveGroupMatches() {
-  document.getElementById("active-group-title").textContent = activeGroup;
+// Render Matches list in active round with comparison
+function renderActiveRoundMatches() {
+  const activeRoundTitleEl = document.getElementById("active-round-title");
+  if (activeRoundTitleEl) {
+    activeRoundTitleEl.textContent = activeRound;
+  }
   
   const container = document.getElementById("matches-grid-container");
+  if (!container) return;
   container.innerHTML = "";
   
-  // Find predictions of playerA and playerB
-  const pA = participants.find(p => p.name === playerA);
-  const pB = participants.find(p => p.name === playerB);
-  
-  if (!pA || !pB) return;
+  if (selectedPlayers.length === 0) {
+    container.innerHTML = `<div class="placeholder-text"><i class="fa-solid fa-circle-info"></i> Please select players to compare in the header above</div>`;
+    return;
+  }
 
-  // Filter matches that are in this group
-  const matchesInGroup = Object.keys(matchToGroup).filter(id => matchToGroup[id] === activeGroup);
+  // Filter matches that are in this round, sorted chronologically by their order
+  const matchesInRound = Object.entries(matchSchedule)
+    .filter(([matchId, info]) => info.round === activeRound)
+    .sort((a, b) => a[1].order - b[1].order)
+    .map(([matchId, info]) => matchId);
   
-  matchesInGroup.forEach(matchId => {
+  matchesInRound.forEach(matchId => {
+    const info = matchSchedule[matchId];
     const actScore = actualResults.matches[matchId] || "";
-    
-    // Get prediction and points for player A and B
-    const predA = pA.predictions.matches[matchId] || { prediction: "", points: 0 };
-    const predB = pB.predictions.matches[matchId] || { prediction: "", points: 0 };
     
     const card = document.createElement("div");
     card.className = "match-card";
     
-    // Render flags if possible, otherwise simple text. Standard emojis are cross platform.
     const [t1, t2] = matchId.split("-");
+    const flag1 = teamFlags[t1] || t1.toLowerCase();
+    const flag2 = teamFlags[t2] || t2.toLowerCase();
+    
+    // Generate prediction items for all selected players
+    let predictionsHTML = "";
+    selectedPlayers.forEach((playerName, idx) => {
+      const p = participants.find(part => part.name === playerName);
+      if (!p) return;
+      const pred = p.predictions.matches[matchId] || { prediction: "", points: 0 };
+      const borderStyle = idx > 0 ? 'style="border-top: 1px solid rgba(255,255,255,0.03); padding-top:0.4rem; margin-top:0.4rem;"' : '';
+      
+      predictionsHTML += `
+        <div class="prediction-item" ${borderStyle}>
+          <span class="pred-player-name" title="${playerName}">${playerName}</span>
+          <div class="pred-content-row">
+            <span class="pred-val">${pred.prediction || "--"}</span>
+            <span class="point-badge pts-${pred.points}">${pred.points > 0 ? `+${pred.points}` : '0'}</span>
+          </div>
+        </div>
+      `;
+    });
     
     card.innerHTML = `
-      <div class="match-meta">
-        <span class="match-id">${matchId}</span>
-        <span class="match-teams">${t1} vs ${t2}</span>
+      <div class="match-card-bg">
+        <div class="flag-left" style="background-image: url(https://flagcdn.com/w320/${flag1}.png)"></div>
+        <div class="flag-right" style="background-image: url(https://flagcdn.com/w320/${flag2}.png)"></div>
+        <div class="bg-overlay"></div>
       </div>
-      <div class="match-row-data">
-        <span class="score-label">Actual Score</span>
-        <div class="score-display-row">
-          <input type="text" class="actual-score-input" value="${actScore}" placeholder="-- - --" onchange="onMatchScoreChange('${matchId}', this.value)">
+      <div class="match-card-content">
+        <div class="match-meta">
+          <div class="match-meta-top">
+            <span class="match-id">${matchId}</span>
+            <span class="match-schedule-info"><i class="fa-regular fa-calendar"></i> ${info.date} &nbsp; <i class="fa-regular fa-clock"></i> ${info.time} CEST</span>
+          </div>
+          <span class="match-teams">${teamNames[t1] || t1} vs ${teamNames[t2] || t2}</span>
         </div>
-      </div>
-      <div class="predictions-area">
-        <div class="prediction-item">
-          <span class="pred-player-name">${playerA}</span>
-          <div class="pred-content-row">
-            <span class="pred-val">${predA.prediction || "--"}</span>
-            <span class="point-badge pts-${predA.points}">${predA.points > 0 ? `+${predA.points}` : '0'}</span>
+        <div class="match-row-data">
+          <span class="score-label">Actual Score</span>
+          <div class="score-display-row">
+            <input type="text" class="actual-score-input" value="${actScore}" placeholder="-- - --" onchange="onMatchScoreChange('${matchId}', this.value)">
           </div>
         </div>
-        <div class="prediction-item" style="border-top: 1px solid rgba(255,255,255,0.03); padding-top:0.4rem; margin-top:0.4rem;">
-          <span class="pred-player-name">${playerB}</span>
-          <div class="pred-content-row">
-            <span class="pred-val">${predB.prediction || "--"}</span>
-            <span class="point-badge pts-${predB.points}">${predB.points > 0 ? `+${predB.points}` : '0'}</span>
-          </div>
+        <div class="predictions-area">
+          ${predictionsHTML}
         </div>
       </div>
     `;
@@ -566,7 +856,7 @@ window.onMatchScoreChange = function(matchId, value) {
     if (score === null) {
       alert("Invalid score format. Please use 'Home-Away' format, e.g. '2-1' or '0-0'. Clear the input to mark as unplayed.");
       // Reset input
-      renderActiveGroupMatches();
+      renderActiveRoundMatches();
       return;
     }
     // Re-format clean
@@ -575,14 +865,10 @@ window.onMatchScoreChange = function(matchId, value) {
   
   actualResults.matches[matchId] = val;
   recalculate();
+  saveActualResults();
 };
 
-// Player selector changed
-window.onPlayerSelectChange = function() {
-  playerA = document.getElementById("player-a-select").value;
-  playerB = document.getElementById("player-b-select").value;
-  renderActiveGroupMatches();
-};
+// (onPlayerSelectChange is handled in applyCompareSelection)
 
 // Reset to initial files values
 window.resetToDefaults = function() {
@@ -631,4 +917,5 @@ window.simulateRandomResults = function() {
   document.getElementById("actual-champion-input").value = randChamp;
   
   recalculate();
+  saveActualResults();
 };

@@ -1,6 +1,9 @@
 services:
   cuccipool:
-    build: https://github.com/JorisWijnen/cuccipool.git
+    build: .
     container_name: cuccipool-app
     ports:
       - "8800:8800"
+    volumes:
+      - ./actual_results.json:/app/actual_results.json
+      - ./leaderboard.json:/app/leaderboard.json

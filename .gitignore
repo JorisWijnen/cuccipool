@@ -9,3 +9,4 @@ ENV/
 .idea/
 .vscode/
 voorspellingen.xlsx.temp.xlsx
+config.json
