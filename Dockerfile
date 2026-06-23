@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8800
 
 # Start the custom HTTP server to support saving scores
-CMD python server.py
+CMD ["python", "server.py"]
