@@ -82,6 +82,108 @@ def clean_name(name):
         
     return only_ascii
 
+def get_groups(matches):
+    adj = {}
+    for match_id in matches:
+        t1, t2 = match_id.split('-')
+        adj.setdefault(t1, set()).add(t2)
+        adj.setdefault(t2, set()).add(t1)
+    visited = set()
+    groups = []
+    for team in sorted(adj.keys()):
+        if team not in visited:
+            comp = []
+            queue = [team]
+            visited.add(team)
+            while queue:
+                curr = queue.pop(0)
+                comp.append(curr)
+                for neighbor in adj[curr]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append(neighbor)
+            groups.append(sorted(comp))
+    return sorted(groups, key=lambda g: g[0])
+
+def sort_group_teams(group, matches_scores):
+    stats = {team: {'points': 0, 'gd': 0, 'gf': 0} for team in group}
+    group_set = set(group)
+    h2h_matches = []
+    played_matches_count = 0
+    
+    for match_id, score in matches_scores.items():
+        t1, t2 = match_id.split('-')
+        if t1 in group_set and t2 in group_set:
+            parsed = parse_score(score)
+            if parsed is not None:
+                played_matches_count += 1
+                h, a = parsed
+                stats[t1]['gf'] += h
+                stats[t2]['gf'] += a
+                stats[t1]['gd'] += (h - a)
+                stats[t2]['gd'] += (a - h)
+                if h > a:
+                    stats[t1]['points'] += 3
+                elif h < a:
+                    stats[t2]['points'] += 3
+                else:
+                    stats[t1]['points'] += 1
+                    stats[t2]['points'] += 1
+                h2h_matches.append((t1, t2, h, a))
+
+    def compare_teams(a, b):
+        if stats[a]['points'] != stats[b]['points']:
+            return stats[b]['points'] - stats[a]['points']
+            
+        h2h_points_a = 0
+        h2h_points_b = 0
+        h2h_gd_a = 0
+        h2h_gd_b = 0
+        h2h_gf_a = 0
+        h2h_gf_b = 0
+        
+        for t1, t2, h, a_goals in h2h_matches:
+            if {t1, t2} == {a, b}:
+                if t1 == a:
+                    h_score, a_score = h, a_goals
+                else:
+                    h_score, a_score = a_goals, h
+                
+                h2h_gf_a += h_score
+                h2h_gf_b += a_score
+                h2h_gd_a += (h_score - a_score)
+                h2h_gd_b += (a_score - h_score)
+                
+                if h_score > a_score:
+                    h2h_points_a += 3
+                elif h_score < a_score:
+                    h2h_points_b += 3
+                else:
+                    h2h_points_a += 1
+                    h2h_points_b += 1
+                    
+        if h2h_points_a != h2h_points_b:
+            return h2h_points_b - h2h_points_a
+        if h2h_gd_a != h2h_gd_b:
+            return h2h_gd_b - h2h_gd_a
+        if h2h_gf_a != h2h_gf_b:
+            return h2h_gf_b - h2h_gf_a
+            
+        if stats[a]['gd'] != stats[b]['gd']:
+            return stats[b]['gd'] - stats[a]['gd']
+        if stats[a]['gf'] != stats[b]['gf']:
+            return stats[b]['gf'] - stats[a]['gf']
+            
+        if a < b:
+            return -1
+        elif a > b:
+            return 1
+        return 0
+
+    from functools import cmp_to_key
+    sorted_teams = sorted(group, key=cmp_to_key(compare_teams))
+    return sorted_teams, played_matches_count
+
 def main():
     # Use the directory containing the script to dynamically locate project files
     workspace = os.path.dirname(os.path.abspath(__file__))
@@ -268,19 +370,86 @@ def main():
             "totalPoints": goals * mult
         }
 
+    # Discover groups dynamically
+    groups = get_groups(matches_list)
+    
+    # Precalculate actual standings for all groups
+    actual_standings = {}
+    active_groups = set()
+    for group in groups:
+        group_actual_scores = {}
+        for match_id in matches_list:
+            t1, t2 = match_id.split('-')
+            if t1 in group and t2 in group:
+                group_actual_scores[match_id] = actual_results.get("matches", {}).get(match_id, "")
+        sorted_actual_teams, played_count = sort_group_teams(group, group_actual_scores)
+        actual_ranks = {team: rank for rank, team in enumerate(sorted_actual_teams, 1)}
+        actual_standings[tuple(group)] = (sorted_actual_teams, played_count, actual_ranks)
+        if played_count == 6:
+            active_groups.add(tuple(group))
+
     leaderboard_records = []
     
     for p in participants:
         # Sum match points
         match_pts = sum(m["points"] for m in p["matches"].values())
         
+        # Calculate group position points and build group predictions details
+        group_pts = 0
+        groups_predictions = []
+        
+        # Find player's predicted positions first
+        player_pred_pos = {}
+        for group in groups:
+            group_pred_scores = {}
+            for match_id in matches_list:
+                t1, t2 = match_id.split('-')
+                if t1 in group and t2 in group:
+                    group_pred_scores[match_id] = p["matches"][match_id]["prediction"]
+            sorted_pred_teams, _ = sort_group_teams(group, group_pred_scores)
+            for rank, team in enumerate(sorted_pred_teams, 1):
+                player_pred_pos[team] = rank
+
+        for idx, group in enumerate(groups, 1):
+            group_name = f"Group {chr(64 + idx)}"
+            
+            sorted_actual_teams, played_count, actual_ranks = actual_standings[tuple(group)]
+            
+            # Sort the group's teams based on player's predictions for display order
+            group_pred_scores = {}
+            for match_id in matches_list:
+                t1, t2 = match_id.split('-')
+                if t1 in group and t2 in group:
+                    group_pred_scores[match_id] = p["matches"][match_id]["prediction"]
+            sorted_pred_teams, _ = sort_group_teams(group, group_pred_scores)
+            
+            group_teams_data = []
+            for team in sorted_pred_teams:
+                pred_rank = player_pred_pos[team]
+                act_rank = actual_ranks[team]
+                is_correct = (played_count == 6) and (pred_rank == act_rank)
+                group_teams_data.append({
+                    "team": team,
+                    "predictedRank": pred_rank,
+                    "actualRank": act_rank if played_count > 0 else "-",
+                    "correct": is_correct,
+                    "points": 25 if is_correct else 0
+                })
+                if is_correct:
+                    group_pts += 25
+            
+            groups_predictions.append({
+                "groupName": group_name,
+                "teams": group_teams_data,
+                "isCompleted": played_count == 6,
+                "isActive": played_count > 0
+            })
+        
         # Calculate topscorer points
         ts_details = []
         ts_pts = 0
         total_picked_goals = 0
         for ts_name in p["topscorers"]:
-            # Find in actual results
-            # Try to match case-insensitively or with normalized encoding
             actual_data = None
             matched_key = ts_name
             for k in actual_topscorers.keys():
@@ -317,13 +486,14 @@ def main():
             correct_champion = True
             champ_pts = 250
             
-        total_pts = match_pts + ts_pts + champ_pts
+        total_pts = match_pts + ts_pts + champ_pts + group_pts
         
         leaderboard_records.append({
             "name": p["name"],
             "matchPoints": match_pts,
             "topscorerPoints": ts_pts,
             "championPoints": champ_pts,
+            "groupPoints": group_pts,
             "totalPoints": total_pts,
             "totalGoals": total_picked_goals,
             "predictions": {
@@ -334,7 +504,8 @@ def main():
                     "actual": actual_champion,
                     "points": champ_pts,
                     "correct": correct_champion
-                }
+                },
+                "groups": groups_predictions
             }
         })
 
@@ -368,6 +539,7 @@ def main():
             "name": r["name"],
             "matchPoints": r["matchPoints"],
             "topscorerPoints": r["topscorerPoints"],
+            "groupPoints": r["groupPoints"],
             "championPoints": r["championPoints"],
             "totalPoints": r["totalPoints"],
             "totalGoals": r["totalGoals"]

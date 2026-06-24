@@ -1,4 +1,5 @@
 // State variables
+const isAdmin = window.IS_ADMIN || false;
 let leaderboardData = null;
 let actualResults = {
   matches: {},
@@ -229,7 +230,10 @@ document.addEventListener("DOMContentLoaded", () => {
         actualResults = actualRes;
         participants = JSON.parse(JSON.stringify(leaderboardData.participantsDetails));
         
-        document.getElementById("actual-champion-input").value = actualResults.champion || "";
+        const championInput = document.getElementById("actual-champion-input");
+        if (championInput) {
+          championInput.value = actualResults.champion || "";
+        }
         recalculate();
       }
     } catch (error) {
@@ -263,7 +267,21 @@ async function loadData() {
     buildRoundNavigation();
     
     // Fill the actual champion in the input field
-    document.getElementById("actual-champion-input").value = actualResults.champion || "";
+    const championInput = document.getElementById("actual-champion-input");
+    if (championInput) {
+      championInput.value = actualResults.champion || "";
+      if (!isAdmin) {
+        championInput.readOnly = true;
+        championInput.placeholder = "Not decided yet";
+        championInput.classList.add("readonly-input");
+      }
+    }
+
+    // Hide pool actions if not admin
+    const poolActions = document.querySelector(".pool-actions");
+    if (poolActions && !isAdmin) {
+      poolActions.style.display = "none";
+    }
     
     // Perform initial recalculation
     recalculate();
@@ -508,9 +526,147 @@ function cleanName(name) {
   return s;
 }
 
+// Dynamic group discovery
+function getGroups(matchIds) {
+  const adj = {};
+  matchIds.forEach(id => {
+    const [t1, t2] = id.split('-');
+    if (!adj[t1]) adj[t1] = [];
+    if (!adj[t2]) adj[t2] = [];
+    adj[t1].push(t2);
+    adj[t2].push(t1);
+  });
+  
+  const visited = new Set();
+  const groups = [];
+  const teams = Object.keys(adj).sort();
+  teams.forEach(team => {
+    if (!visited.has(team)) {
+      const comp = [];
+      const queue = [team];
+      visited.add(team);
+      while (queue.length > 0) {
+        const curr = queue.shift();
+        comp.push(curr);
+        adj[curr].forEach(neighbor => {
+          if (!visited.has(neighbor)) {
+            visited.add(neighbor);
+            queue.push(neighbor);
+          }
+        });
+      }
+      groups.push(comp.sort());
+    }
+  });
+  return groups.sort((a, b) => a[0].localeCompare(b[0]));
+}
+
+// Calculate group standings with FIFA tie-breakers
+function calculateGroupStandings(group, matchesScores) {
+  const stats = {};
+  group.forEach(team => {
+    stats[team] = { points: 0, gd: 0, gf: 0 };
+  });
+  
+  const groupSet = new Set(group);
+  const h2hMatches = [];
+  let playedMatchesCount = 0;
+  
+  Object.keys(matchesScores).forEach(matchId => {
+    const [t1, t2] = matchId.split('-');
+    if (groupSet.has(t1) && groupSet.has(t2)) {
+      const score = matchesScores[matchId];
+      const parsed = parseScore(score);
+      if (parsed !== null) {
+        playedMatchesCount++;
+        const [h, a] = parsed;
+        stats[t1].gf += h;
+        stats[t2].gf += a;
+        stats[t1].gd += (h - a);
+        stats[t2].gd += (a - h);
+        if (h > a) {
+          stats[t1].points += 3;
+        } else if (h < a) {
+          stats[t2].points += 3;
+        } else {
+          stats[t1].points += 1;
+          stats[t2].points += 1;
+        }
+        h2hMatches.push({ t1, t2, h, a });
+      }
+    }
+  });
+
+  const sortedTeams = [...group].sort((a, b) => {
+    if (stats[a].points !== stats[b].points) {
+      return stats[b].points - stats[a].points;
+    }
+    
+    // Head-to-Head
+    let h2hPointsA = 0;
+    let h2hPointsB = 0;
+    let h2hGdA = 0;
+    let h2hGdB = 0;
+    let h2hGfA = 0;
+    let h2hGfB = 0;
+    
+    h2hMatches.forEach(m => {
+      if ((m.t1 === a && m.t2 === b) || (m.t1 === b && m.t2 === a)) {
+        let hScore, aScore;
+        if (m.t1 === a) {
+          hScore = m.h;
+          aScore = m.a;
+        } else {
+          hScore = m.a;
+          aScore = m.h;
+        }
+        
+        h2hGfA += hScore;
+        h2hGfB += aScore;
+        h2hGdA += (hScore - aScore);
+        h2hGdB += (aScore - hScore);
+        
+        if (hScore > aScore) {
+          h2hPointsA += 3;
+        } else if (hScore < aScore) {
+          h2hPointsB += 3;
+        } else {
+          h2hPointsA += 1;
+          h2hPointsB += 1;
+        }
+      }
+    });
+    
+    if (h2hPointsA !== h2hPointsB) return h2hPointsB - h2hPointsA;
+    if (h2hGdA !== h2hGdB) return h2hGdB - h2hGdA;
+    if (h2hGfA !== h2hGfB) return h2hGfB - h2hGfA;
+    
+    if (stats[a].gd !== stats[b].gd) return stats[b].gd - stats[a].gd;
+    if (stats[a].gf !== stats[b].gf) return stats[b].gf - stats[a].gf;
+    
+    return a.localeCompare(b);
+  });
+  
+  const positions = {};
+  sortedTeams.forEach((team, index) => {
+    positions[team] = index + 1;
+  });
+  
+  return { sortedTeams, playedMatchesCount, stats, positions };
+}
+
 // Core calculation logic (mirrors python calculate.py but runs in real-time)
 function recalculate() {
   const actualChamp = cleanName(actualResults.champion);
+  
+  const matchIds = Object.keys(matchSchedule);
+  const groups = getGroups(matchIds);
+  
+  // Precalculate actual standings for all groups
+  const actualStandings = {};
+  groups.forEach(group => {
+    actualStandings[group.join(',')] = calculateGroupStandings(group, actualResults.matches);
+  });
   
   // 1. Calculate points for all participants
   participants.forEach(p => {
@@ -565,8 +721,59 @@ function recalculate() {
     p.predictions.champion.points = p.championPoints;
     p.predictions.champion.correct = isCorrectChamp;
     
+    // Group standings calculations
+    let groupPoints = 0;
+    const groupsPredictions = [];
+    
+    const playerPredMatches = {};
+    for (const matchId in p.predictions.matches) {
+      playerPredMatches[matchId] = p.predictions.matches[matchId].prediction;
+    }
+    
+    const playerPredPos = {};
+    groups.forEach(group => {
+      const { sortedTeams } = calculateGroupStandings(group, playerPredMatches);
+      sortedTeams.forEach((team, idx) => {
+        playerPredPos[team] = idx + 1;
+      });
+    });
+
+    groups.forEach((group, idx) => {
+      const groupName = `Group ${String.fromCharCode(65 + idx)}`;
+      const { sortedTeams: sortedActualTeams, playedMatchesCount, positions: actualRanks } = actualStandings[group.join(',')];
+      
+      const { sortedTeams: sortedPredTeams } = calculateGroupStandings(group, playerPredMatches);
+      
+      const groupTeamsData = [];
+      sortedPredTeams.forEach(team => {
+        const predRank = playerPredPos[team];
+        const actRank = actualRanks[team];
+        const isCorrect = (playedMatchesCount === 6) && (predRank === actRank);
+        groupTeamsData.push({
+          team: team,
+          predictedRank: predRank,
+          actualRank: playedMatchesCount > 0 ? actRank : "-",
+          correct: isCorrect,
+          points: isCorrect ? 25 : 0
+        });
+        if (isCorrect) {
+          groupPoints += 25;
+        }
+      });
+      
+      groupsPredictions.push({
+        groupName,
+        teams: groupTeamsData,
+        isCompleted: playedMatchesCount === 6,
+        isActive: playedMatchesCount > 0
+      });
+    });
+    
+    p.groupPoints = groupPoints;
+    p.predictions.groups = groupsPredictions;
+    
     // Total
-    p.totalPoints = p.matchPoints + p.topscorerPoints + p.championPoints;
+    p.totalPoints = p.matchPoints + p.topscorerPoints + p.championPoints + p.groupPoints;
   });
   
   // Sort participants by total points
@@ -588,6 +795,7 @@ function recalculate() {
 
 // Save actual results to server and trigger calculation sync
 async function saveActualResults() {
+  if (!isAdmin) return;
   try {
     const response = await fetch("/api/save", {
       method: "POST",
@@ -629,7 +837,7 @@ function renderLeaderboard() {
     tr.onclick = (e) => {
       // Don't trigger if clicked on an input/button
       if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "BUTTON") return;
-      selectPlayerForCompare(p.name);
+      openPredictionsPopup(p.name);
     };
     
     tr.innerHTML = `
@@ -637,6 +845,7 @@ function renderLeaderboard() {
       <td class="col-name">${p.name}</td>
       <td class="col-pts text-center">${p.matchPoints}</td>
       <td class="col-pts text-center">${p.topscorerPoints} <span style="font-size:0.75rem; opacity:0.6;">(${p.totalGoals} goals)</span></td>
+      <td class="col-pts text-center">${p.groupPoints || 0}</td>
       <td class="col-pts text-center">${p.championPoints}</td>
       <td class="col-total text-center">${p.totalPoints}</td>
     `;
@@ -654,15 +863,45 @@ function selectPlayerForCompare(name) {
   renderActiveRoundMatches();
 }
 
+// Helper to resolve player country names
+function getPlayerCountryName(playerName) {
+  const code = playerCountries[playerName] || "un";
+  if (code === "un") return "Unknown";
+  
+  const teamCode = Object.keys(teamFlags).find(key => teamFlags[key] === code);
+  if (teamCode && teamNames[teamCode]) {
+    return teamNames[teamCode];
+  }
+  
+  if (code === "gb-eng") return "England";
+  if (code === "gb-sct") return "Scotland";
+  
+  return code.toUpperCase();
+}
+
 // Render Topscorers Editor List
 function renderTopscorersTab() {
   const container = document.getElementById("topscorers-list-container");
   container.innerHTML = "";
   
-  // Get and sort players by goals (descending), then alphabetically
-  const sortedPlayers = Object.entries(actualResults.topscorers)
-    .map(([name, data]) => ({ name, ...data }))
-    .sort((a, b) => {
+  // Get and sort players
+  let sortedPlayers = Object.entries(actualResults.topscorers)
+    .map(([name, data]) => ({ name, ...data }));
+    
+  if (isAdmin) {
+    // Sort by country alphabetically, then by player name alphabetically
+    sortedPlayers.sort((a, b) => {
+      const countryA = getPlayerCountryName(a.name);
+      const countryB = getPlayerCountryName(b.name);
+      const countryComp = countryA.localeCompare(countryB);
+      if (countryComp !== 0) {
+        return countryComp;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  } else {
+    // Sort by goals (descending), then alphabetically by player name
+    sortedPlayers.sort((a, b) => {
       const goalsA = parseInt(a.goals) || 0;
       const goalsB = parseInt(b.goals) || 0;
       if (goalsB !== goalsA) {
@@ -670,6 +909,7 @@ function renderTopscorersTab() {
       }
       return a.name.localeCompare(b.name);
     });
+  }
     
   // Filter players by query
   const filteredPlayers = sortedPlayers.filter(p => {
@@ -703,12 +943,9 @@ function renderTopscorersTab() {
       div.style.backgroundRepeat = "no-repeat";
     }
     
-    div.innerHTML = `
-      <div class="player-info-meta">
-        <span class="player-name">${name}</span>
-        <span class="player-position-pill pos-${pos}">${pos}</span>
-      </div>
-      <div class="player-controls">
+    let controlsHTML = "";
+    if (isAdmin) {
+      controlsHTML = `
         <select class="select-pos-dropdown" onchange="onPlayerPositionChange('${name}', this.value)">
           <option value="attacker" ${pos === "attacker" ? "selected" : ""}>Attacker (8x)</option>
           <option value="midfielder" ${pos === "midfielder" ? "selected" : ""}>Midfielder (16x)</option>
@@ -720,7 +957,20 @@ function renderTopscorersTab() {
           <input type="number" value="${goals}" min="0" max="99" onchange="onPlayerGoalsChange('${name}', this.value)">
           <button type="button" onclick="adjustGoals('${name}', 1)"><i class="fa-solid fa-plus"></i></button>
         </div>
-        
+      `;
+    } else {
+      controlsHTML = `
+        <span class="goals-display-badge"><i class="fa-solid fa-soccer-ball"></i> ${goals} ${goals === 1 ? 'goal' : 'goals'}</span>
+      `;
+    }
+    
+    div.innerHTML = `
+      <div class="player-info-meta">
+        <span class="player-name">${name}</span>
+        <span class="player-position-pill pos-${pos}">${pos}</span>
+      </div>
+      <div class="player-controls">
+        ${controlsHTML}
         <span class="goals-points-badge">${points} pts</span>
       </div>
     `;
@@ -730,6 +980,7 @@ function renderTopscorersTab() {
 
 // Adjust goals via +/- buttons
 window.adjustGoals = function(name, amount) {
+  if (!isAdmin) return;
   const currentGoals = parseInt(actualResults.topscorers[name].goals) || 0;
   const newGoals = Math.max(0, currentGoals + amount);
   actualResults.topscorers[name].goals = newGoals;
@@ -739,6 +990,7 @@ window.adjustGoals = function(name, amount) {
 
 // Goals input changed
 window.onPlayerGoalsChange = function(name, value) {
+  if (!isAdmin) return;
   let val = parseInt(value);
   if (isNaN(val) || val < 0) val = 0;
   actualResults.topscorers[name].goals = val;
@@ -748,6 +1000,7 @@ window.onPlayerGoalsChange = function(name, value) {
 
 // Position dropdown changed
 window.onPlayerPositionChange = function(name, value) {
+  if (!isAdmin) return;
   actualResults.topscorers[name].position = value;
   recalculate();
   saveActualResults();
@@ -755,6 +1008,7 @@ window.onPlayerPositionChange = function(name, value) {
 
 // Champion input changed
 window.onChampionChange = function(value) {
+  if (!isAdmin) return;
   actualResults.champion = value;
   recalculate();
   saveActualResults();
@@ -835,7 +1089,10 @@ function renderActiveRoundMatches() {
         <div class="match-row-data">
           <span class="score-label">Actual Score</span>
           <div class="score-display-row">
-            <input type="text" class="actual-score-input" value="${actScore}" placeholder="-- - --" onchange="onMatchScoreChange('${matchId}', this.value)">
+            ${isAdmin ? 
+              `<input type="text" class="actual-score-input" value="${actScore}" placeholder="-- - --" onchange="onMatchScoreChange('${matchId}', this.value)">` : 
+              `<span class="actual-score-display">${actScore || "-- - --"}</span>`
+            }
           </div>
         </div>
         <div class="predictions-area">
@@ -849,6 +1106,7 @@ function renderActiveRoundMatches() {
 
 // Score input changed
 window.onMatchScoreChange = function(matchId, value) {
+  if (!isAdmin) return;
   // Validate format (e.g. 1-0 or empty)
   let val = value.trim();
   if (val !== "") {
@@ -872,6 +1130,7 @@ window.onMatchScoreChange = function(matchId, value) {
 
 // Reset to initial files values
 window.resetToDefaults = function() {
+  if (!isAdmin) return;
   if (confirm("Are you sure you want to discard your unsaved in-browser changes and reload original results?")) {
     loadData();
   }
@@ -891,6 +1150,7 @@ window.exportResults = function() {
 
 // Simulate random scores for testing the leaderboard animations and stats
 window.simulateRandomResults = function() {
+  if (!isAdmin) return;
   if (!confirm("This will randomly populate scores for all group stage matches, topscorer goals, and a champion to test the leaderboard. Continue?")) {
     return;
   }
@@ -914,8 +1174,254 @@ window.simulateRandomResults = function() {
   const champions = ["Spanje", "Frankrijk", "Duitsland", "Engeland", "Argentinië", "Brazilië"];
   const randChamp = champions[Math.floor(Math.random() * champions.length)];
   actualResults.champion = randChamp;
-  document.getElementById("actual-champion-input").value = randChamp;
+  const champInput = document.getElementById("actual-champion-input");
+  if (champInput) {
+    champInput.value = randChamp;
+  }
   
   recalculate();
   saveActualResults();
 };
+
+// Predictions Modal functions
+window.openPredictionsPopup = function(playerName) {
+  const p = participants.find(part => part.name === playerName);
+  if (!p) return;
+  
+  document.getElementById("pred-modal-player-name").textContent = playerName;
+  window.CURRENT_PRED_PLAYER = p;
+  switchPredTab('pred-summary');
+  document.getElementById("predictions-modal").classList.add("active");
+};
+
+window.closePredictionsPopup = function() {
+  document.getElementById("predictions-modal").classList.remove("active");
+};
+
+window.switchPredTab = function(tabId) {
+  // Toggle tab buttons
+  document.querySelectorAll("#predictions-modal .tab-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+  
+  const clickedBtn = document.getElementById(`btn-${tabId}`);
+  if (clickedBtn) clickedBtn.classList.add("active");
+  
+  // Toggle tab contents
+  document.querySelectorAll("#predictions-modal .pred-tab-content").forEach(content => {
+    content.style.display = "none";
+    content.classList.remove("active");
+  });
+  
+  const targetContent = document.getElementById(tabId);
+  if (targetContent) {
+    targetContent.style.display = "block";
+    targetContent.classList.add("active");
+  }
+  
+  const p = window.CURRENT_PRED_PLAYER;
+  if (!p) return;
+  
+  if (tabId === 'pred-summary') {
+    renderPredSummary(p);
+  } else if (tabId === 'pred-groups') {
+    renderPredGroups(p);
+  } else if (tabId === 'pred-matches') {
+    renderPredMatches(p);
+  }
+};
+
+function renderPredSummary(p) {
+  const container = document.getElementById("pred-summary");
+  
+  let tsHTML = "";
+  p.predictions.topscorers.forEach(ts => {
+    tsHTML += `
+      <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:0.75rem 1rem; border-radius:8px; border:1px solid rgba(255,255,255,0.04);">
+        <div>
+          <span style="font-weight:700; font-size:0.95rem;">${ts.name}</span>
+          <span class="player-position-pill pos-${ts.position}" style="font-size:0.65rem; margin-left:0.5rem; text-transform:uppercase;">${ts.position}</span>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-weight:600; font-size:0.9rem; color:var(--text-main);">${ts.goals} goals</span>
+          <span style="font-size:0.75rem; color:var(--text-muted); display:block;">(${ts.pointsPerGoal}x mult = ${ts.points} pts)</span>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+      <div style="background:rgba(99,102,241,0.05); border:1px solid rgba(99,102,241,0.1); border-radius:12px; padding:1.25rem;">
+        <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; letter-spacing:0.05em;">Predicted Champion</span>
+        <div style="display:flex; align-items:center; gap:0.75rem; margin-top:0.5rem;">
+          <i class="fa-solid fa-crown text-gold" style="font-size:1.5rem;"></i>
+          <span style="font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--text-main);">${p.predictions.champion.predicted || "--"}</span>
+        </div>
+        <div style="margin-top:0.75rem; font-size:0.85rem; color:${p.predictions.champion.correct ? 'var(--accent-emerald)' : 'var(--text-muted)'};">
+          ${p.predictions.champion.correct ? '<i class="fa-solid fa-circle-check"></i> Correct prediction! (+250 pts)' : `Actual: ${p.predictions.champion.actual || "Not decided"} (0 pts)`}
+        </div>
+      </div>
+      
+      <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.75rem;">
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:10px; padding:0.75rem 1rem; text-align:center;">
+          <span style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Match Points</span>
+          <span style="font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--accent-cyan); display:block; margin-top:0.25rem;">${p.matchPoints}</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:10px; padding:0.75rem 1rem; text-align:center;">
+          <span style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Topscorer Points</span>
+          <span style="font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--accent-yellow); display:block; margin-top:0.25rem;">${p.topscorerPoints}</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:10px; padding:0.75rem 1rem; text-align:center;">
+          <span style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Group Points</span>
+          <span style="font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--accent-primary); display:block; margin-top:0.25rem;">${p.groupPoints || 0}</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:10px; padding:0.75rem 1rem; text-align:center; border-color:rgba(99,102,241,0.25);">
+          <span style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:600;">Total Points</span>
+          <span style="font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--text-main); display:block; margin-top:0.25rem;">${p.totalPoints}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <h4 style="font-family:var(--font-display); margin-bottom:0.75rem; font-size:1.1rem;"><i class="fa-solid fa-soccer-ball text-gold"></i> Predicted Topscorers</h4>
+      <div style="display:flex; flex-direction:column; gap:0.6rem;">
+        ${tsHTML}
+      </div>
+    </div>
+  `;
+}
+
+function renderPredGroups(p) {
+  const container = document.getElementById("pred-groups");
+  
+  let groupsHTML = "";
+  p.predictions.groups.forEach(g => {
+    let teamRowsHTML = "";
+    g.teams.forEach(t => {
+      const flagCode = teamFlags[t.team] || t.team.toLowerCase();
+      const flagUrl = `https://flagcdn.com/w80/${flagCode}.png`;
+      
+      teamRowsHTML += `
+        <tr class="${t.correct ? 'pred-row-correct' : ''}">
+          <td style="padding:0.4rem 0.75rem; text-align:center; font-weight:700;">${t.predictedRank}</td>
+          <td style="padding:0.4rem 0.75rem; display:flex; align-items:center; gap:0.5rem; font-weight:600;">
+            <img src="${flagUrl}" style="width:20px; border-radius:2px; height:auto; border:1px solid rgba(255,255,255,0.05);" alt="${t.team}">
+            <span title="${teamNames[t.team] || t.team}">${t.team}</span>
+          </td>
+          <td style="padding:0.4rem 0.75rem; text-align:center; color:var(--text-muted);">${t.actualRank}</td>
+          <td style="padding:0.4rem 0.75rem; text-align:center; font-family:var(--font-display); font-weight:700; color:${t.correct ? 'var(--accent-emerald)' : 'var(--text-muted)'};">
+            ${t.correct ? '+25' : '0'}
+          </td>
+        </tr>
+      `;
+    });
+    
+    groupsHTML += `
+      <div style="background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.04); border-radius:10px; padding:0.75rem; display:flex; flex-direction:column; gap:0.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:0.4rem; margin-bottom:0.25rem;">
+          <h4 style="font-family:var(--font-display); font-weight:700; font-size:0.95rem; color:var(--text-main);">${g.groupName}</h4>
+          ${g.isCompleted ? 
+            '<span class="badge" style="font-size:0.65rem; background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.25); color:var(--accent-emerald);">Completed</span>' : 
+            (g.isActive ? 
+              '<span class="badge" style="font-size:0.65rem; background:rgba(6,182,212,0.1); border-color:rgba(6,182,212,0.25); color:var(--accent-cyan);">In Progress</span>' : 
+              '<span class="badge" style="font-size:0.65rem; background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.05); color:var(--text-muted);">Unplayed</span>'
+            )
+          }
+        </div>
+        <table style="width:100%; font-size:0.8rem; border-collapse:collapse;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.03);">
+              <th style="padding:0.25rem 0.5rem; font-size:0.65rem; text-transform:uppercase; text-align:center; color:var(--text-muted);">Pred</th>
+              <th style="padding:0.25rem 0.5rem; font-size:0.65rem; text-transform:uppercase; text-align:left; color:var(--text-muted);">Team</th>
+              <th style="padding:0.25rem 0.5rem; font-size:0.65rem; text-transform:uppercase; text-align:center; color:var(--text-muted);">Act</th>
+              <th style="padding:0.25rem 0.5rem; font-size:0.65rem; text-transform:uppercase; text-align:center; color:var(--text-muted);">Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${teamRowsHTML}
+          </tbody>
+        </table>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = `
+    <p class="section-desc" style="margin-bottom:1rem;"><i class="fa-solid fa-circle-info text-cyan"></i> Awarded 25 points for each correct team position guess. Standings resolve live using World Cup rules (Points, GD, GF, H2H).</p>
+    <div class="predictions-groups-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:1rem; max-height:550px; overflow-y:auto; padding-right:0.5rem;">
+      ${groupsHTML}
+    </div>
+  `;
+}
+
+function renderPredMatches(p) {
+  const container = document.getElementById("pred-matches");
+  
+  const rounds = {};
+  for (const matchId in p.predictions.matches) {
+    const info = matchSchedule[matchId];
+    if (info) {
+      if (!rounds[info.round]) rounds[info.round] = [];
+      rounds[info.round].push({
+        id: matchId,
+        pred: p.predictions.matches[matchId].prediction,
+        pts: p.predictions.matches[matchId].points,
+        date: info.date,
+        time: info.time,
+        order: info.order
+      });
+    }
+  }
+  
+  let roundsHTML = "";
+  Object.keys(rounds).sort().forEach(roundName => {
+    let matchesHTML = "";
+    rounds[roundName].sort((a, b) => a.order - b.order).forEach(m => {
+      const [t1, t2] = m.id.split('-');
+      const flag1 = teamFlags[t1] || t1.toLowerCase();
+      const flag2 = teamFlags[t2] || t2.toLowerCase();
+      const actScore = actualResults.matches[m.id] || "--";
+      
+      matchesHTML += `
+        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.03); padding:0.5rem 0.75rem; border-radius:8px;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="display:flex; flex-direction:column; min-width:120px;">
+              <div style="display:flex; align-items:center; gap:0.35rem; font-weight:600; font-size:0.85rem; color:var(--text-main);">
+                <img src="https://flagcdn.com/w40/${flag1}.png" style="width:14px; border-radius:1px;" alt="">
+                <span>${t1}</span>
+                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">vs</span>
+                <img src="https://flagcdn.com/w40/${flag2}.png" style="width:14px; border-radius:1px;" alt="">
+                <span>${t2}</span>
+              </div>
+              <span style="font-size:0.65rem; color:var(--text-muted);"><i class="fa-regular fa-clock"></i> ${m.date} ${m.time}</span>
+            </div>
+            <div style="font-size:0.75rem;">
+              <span style="color:var(--text-muted);">Pred:</span> <span style="font-weight:700; color:var(--text-main); font-family:var(--font-display);">${m.pred || "--"}</span>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="font-size:0.75rem; text-align:right;">
+              <span style="color:var(--text-muted);">Act:</span> <span style="font-weight:700; color:var(--accent-cyan); font-family:var(--font-display);">${actScore}</span>
+            </div>
+            <span class="point-badge pts-${m.pts}">${m.pts > 0 ? `+${m.pts}` : '0'}</span>
+          </div>
+        </div>
+      `;
+    });
+    
+    roundsHTML += `
+      <div style="margin-bottom:1.25rem;">
+        <h4 style="font-family:var(--font-display); border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:0.3rem; margin-bottom:0.6rem; font-size:1rem; color:var(--accent-cyan);">${roundName}</h4>
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          ${matchesHTML}
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = `
+    <div style="max-height:550px; overflow-y:auto; padding-right:0.5rem;">
+      ${roundsHTML}
+    </div>
+  `;
+}

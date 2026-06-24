@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cuccipool - World Cup Dashboard</title>
+  <title>Cuccipool - World Cup Dashboard (Admin)</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,13 +16,13 @@
 <body>
   <div class="app-container">
     <!-- Header -->
-    <header class="main-header">
+    <header class="main-header" style="border-color: rgba(245, 158, 11, 0.3); box-shadow: var(--shadow-md), 0 0 20px rgba(245, 158, 11, 0.1);">
       <div class="logo-area">
         <div class="trophy-glow">
           <i class="fa-solid fa-trophy text-gold"></i>
         </div>
         <div class="header-text">
-          <h1>Cuccipool <span>2026</span></h1>
+          <h1>Cuccipool <span>2026</span> <span class="admin-badge">Admin Panel</span></h1>
           <p class="subtitle">World Cup Group Stage Dashboard & Predictor</p>
         </div>
       </div>
@@ -246,6 +246,9 @@
   </div>
 
   <!-- Javascript Modules -->
+  <script>
+    window.IS_ADMIN = true;
+  </script>
   <script src="app.js"></script>
 </body>
 </html>

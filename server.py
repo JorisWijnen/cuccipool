@@ -8,6 +8,27 @@ import updater
 PORT = 8800
 
 class CuccipoolRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/joris/":
+            self.send_response(301)
+            self.send_header("Location", "/joris")
+            self.end_headers()
+        elif self.path == "/joris":
+            try:
+                workspace = os.path.dirname(os.path.abspath(__file__))
+                admin_path = os.path.join(workspace, "admin.html")
+                with open(admin_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+            except Exception as e:
+                self.send_error(500, f"Error serving admin panel: {str(e)}")
+        else:
+            super().do_GET()
+
     def do_POST(self):
         if self.path == "/api/save":
             content_length = int(self.headers['Content-Length'])
