@@ -67,7 +67,8 @@ class CuccipoolRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 def run(server_class=http.server.HTTPServer, handler_class=CuccipoolRequestHandler):
     # Start the API updater background thread
-    updater.start_api_updater()
+    # Commented out, manual updates for now
+    # updater.start_api_updater()
 
     # Ensure standard simple http server handles root directory
     server_address = ('', PORT)
